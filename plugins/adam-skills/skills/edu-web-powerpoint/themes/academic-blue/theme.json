@@ -1,0 +1,15 @@
+{
+  "id": "academic-blue",
+  "name": "Academic Blue",
+  "nameZh": "学术蓝",
+  "description": "Classic academic blue. White background, deep blue accent, serif headlines. Formal, trustworthy, institutional.",
+  "descriptionZh": "经典学术蓝。白底 + 深蓝 accent + 衬线标题。严谨、正式、可信赖。",
+  "mood": ["formal", "academic", "trustworthy", "clean"],
+  "bestFor": ["大学授课", "正式培训", "学术报告", "研究生课程"],
+  "preview": {
+    "shell": "#f0f2f5",
+    "surface": "#ffffff",
+    "text": "#1a1a2e",
+    "accent": "#1e3a5f"
+  }
+}

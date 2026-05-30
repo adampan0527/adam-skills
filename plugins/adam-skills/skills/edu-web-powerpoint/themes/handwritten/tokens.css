@@ -1,0 +1,30 @@
+/* Theme: handwritten — Warm handwritten */
+:root {
+  --shell:        #f5f0e8;
+  --surface:      #fefcf7;
+  --surface-2:    #f8f4ec;
+  --surface-3:    #f0ebe0;
+  --text:         #3d3428;
+  --text-2:       #5c4f3d;
+  --text-mute:    #8a7d6b;
+  --text-faint:   #b0a590;
+  --rule:         #d4c9b8;
+  --accent:       #e76f51;
+  --accent-soft:  rgba(231, 111, 81, 0.12);
+  --accent-glow:  rgba(231, 111, 81, 0.40);
+
+  --font-display-cn: "ZCOOL XiaoWei", "Ma Shan Zheng", serif;
+  --font-display-en: "Caveat", "Patrick Hand", cursive;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       var(--r-md);
+  --r-stage:      8px;
+  --rule-w:       2px;
+  --rule-style:   dashed;
+  --hero-num-font:   var(--font-display-en);
+  --hero-num-style:  normal;
+  --hero-num-weight: 400;
+  --stage-pad-x:  100px;
+  --stage-pad-y:  80px;
+}

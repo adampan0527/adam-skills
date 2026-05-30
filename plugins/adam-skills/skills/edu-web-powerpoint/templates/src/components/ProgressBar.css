@@ -1,0 +1,64 @@
+.ewp-progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.ewp-progress:hover,
+.ewp-progress:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+.app-shell:hover .ewp-progress {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ewp-progress-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border-radius: 8px 8px 0 0;
+}
+
+.ewp-progress-ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-family: var(--font-mono, monospace);
+}
+.ewp-progress-ch:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+.ewp-progress-ch.active {
+  color: var(--accent, #fff);
+}
+
+.ewp-progress-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.ewp-progress-label {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

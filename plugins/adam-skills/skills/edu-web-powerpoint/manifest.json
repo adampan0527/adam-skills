@@ -1,0 +1,15 @@
+{
+  "name": "edu-web-powerpoint",
+  "version": "1.0.0",
+  "category": "Education / Web Presentation",
+  "description": "Turn lesson plan PDFs, Word documents, or knowledge points + outlines into click-driven 16:9 educational web presentations. Uses markitdown for document preprocessing. Ships a Vite + React + TypeScript scaffold, a (chapter, step) cursor model, case management (hands-on exercises + embedded demos), hard collaboration checkpoints, and a theme-token architecture.",
+  "homepage": "",
+  "compat": [
+    "claude-code",
+    "claude-ai",
+    "cursor",
+    "codex-cli",
+    "gemini-cli",
+    "opencode"
+  ]
+}

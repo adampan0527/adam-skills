@@ -1,0 +1,15 @@
+{
+  "id": "light-board",
+  "name": "Light Board",
+  "nameZh": "光板蓝底",
+  "description": "Light board blue. Dark blue background, white line drawings, neon annotations. Engineering feel.",
+  "descriptionZh": "光板蓝底。深蓝底 + 白色线稿 + 荧光色标注。工程感。",
+  "mood": ["dark", "engineering", "technical", "diagram"],
+  "bestFor": ["工程", "建筑", "物理", "数学", "电路图"],
+  "preview": {
+    "shell": "#0a1628",
+    "surface": "#0f2847",
+    "text": "#e0e8f0",
+    "accent": "#00e5ff"
+  }
+}

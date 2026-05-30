@@ -1,0 +1,15 @@
+{
+  "id": "chalkboard",
+  "name": "Chalkboard",
+  "nameZh": "黑板粉笔",
+  "description": "Chalk on blackboard. Dark green board, white chalk text, handwritten feel. Traditional teaching warmth.",
+  "descriptionZh": "黑板粉笔风。深绿黑板 + 白粉笔字 + 手写体。传统教学的温暖感。",
+  "mood": ["dark", "warm", "handwritten", "traditional"],
+  "bestFor": ["数学", "物理", "传统理科教学", "公式推导"],
+  "preview": {
+    "shell": "#1a2a1a",
+    "surface": "#2d4a2d",
+    "text": "#e8e8d8",
+    "accent": "#f5d76e"
+  }
+}

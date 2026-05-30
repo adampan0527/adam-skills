@@ -1,0 +1,30 @@
+/* Theme: academic-blue — Classic academic blue */
+:root {
+  --shell:        #f0f2f5;
+  --surface:      #ffffff;
+  --surface-2:    #f8f9fa;
+  --surface-3:    #f0f1f3;
+  --text:         #1a1a2e;
+  --text-2:       #3d3d5c;
+  --text-mute:    #6b7280;
+  --text-faint:   #9ca3af;
+  --rule:         #e5e7eb;
+  --accent:       #1e3a5f;
+  --accent-soft:  rgba(30, 58, 95, 0.10);
+  --accent-glow:  rgba(30, 58, 95, 0.40);
+
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-display-en: "Playfair Display", Georgia, serif;
+  --font-body:       "Noto Sans SC", "Inter", -apple-system, sans-serif;
+  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  --r-card:       var(--r-sm);
+  --r-stage:      0;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-display-en);
+  --hero-num-style:  italic;
+  --hero-num-weight: 400;
+  --stage-pad-x:  120px;
+  --stage-pad-y:  80px;
+}

@@ -1,0 +1,39 @@
+/* Theme: code-terminal — Dark terminal green */
+:root {
+  --shell:        #0a0a0a;
+  --surface:      #0d1117;
+  --surface-2:    #161b22;
+  --surface-3:    #1c2128;
+  --text:         #00ff41;
+  --text-2:       #7ee787;
+  --text-mute:    #484f58;
+  --text-faint:   #30363d;
+  --rule:         #21262d;
+  --accent:       #00d4ff;
+  --accent-soft:  rgba(0, 212, 255, 0.10);
+  --accent-glow:  rgba(0, 212, 255, 0.40);
+
+  --font-display-cn: "Noto Sans SC", sans-serif;
+  --font-display-en: "JetBrains Mono", "Fira Code", monospace;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", "Fira Code", monospace;
+
+  --r-card:       var(--r-xs);
+  --r-stage:      0;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-mono);
+  --hero-num-style:  normal;
+  --hero-num-weight: 500;
+  --stage-pad-x:  100px;
+  --stage-pad-y:  80px;
+
+  --surface-pattern: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 65, 0.03) 2px,
+    rgba(0, 255, 65, 0.03) 4px
+  );
+  --text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+}

@@ -1,0 +1,15 @@
+{
+  "id": "science-paper",
+  "name": "Science Paper",
+  "nameZh": "学术论文",
+  "description": "Academic paper. White background, thin lines, mono annotations. Rigorous, precise.",
+  "descriptionZh": "学术论文风。白底 + 细线 + 等宽标注。严谨、精确。",
+  "mood": ["formal", "academic", "precise", "minimal"],
+  "bestFor": ["理科", "研究展示", "论文讲解", "数据分析"],
+  "preview": {
+    "shell": "#f8f8f8",
+    "surface": "#ffffff",
+    "text": "#1a1a1a",
+    "accent": "#0066cc"
+  }
+}

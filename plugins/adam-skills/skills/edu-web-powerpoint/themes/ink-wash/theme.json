@@ -1,0 +1,15 @@
+{
+  "id": "ink-wash",
+  "name": "Ink Wash",
+  "nameZh": "水墨风",
+  "description": "Chinese ink wash. Rice paper white + ink black + subtle wash. Eastern aesthetics, literary feel.",
+  "descriptionZh": "水墨风。宣纸白 + 墨色 + 淡雅。东方美学。",
+  "mood": ["elegant", "ink", "eastern", "literary"],
+  "bestFor": ["文学", "历史", "文化", "中文教学", "哲学"],
+  "preview": {
+    "shell": "#f5f0e8",
+    "surface": "#faf8f2",
+    "text": "#2c2c2c",
+    "accent": "#8b4513"
+  }
+}

@@ -1,0 +1,32 @@
+/* animations.css — reusable animation utilities */
+
+.mask-reveal {
+  display: inline-block;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--dur-slow, 900ms) var(--ease-quart, cubic-bezier(0.19, 1, 0.22, 1));
+}
+.mask-reveal.in {
+  clip-path: inset(0 0% 0 0);
+}
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--dur-base, 600ms) var(--ease-quart),
+              transform var(--dur-base, 600ms) var(--ease-quart);
+}
+.fade-up.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scale-in {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity var(--dur-base, 600ms) var(--ease-quart),
+              transform var(--dur-base, 600ms) var(--ease-overshoot, cubic-bezier(0.34, 1.56, 0.64, 1));
+}
+.scale-in.in {
+  opacity: 1;
+  transform: scale(1);
+}

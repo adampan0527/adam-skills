@@ -1,0 +1,30 @@
+/* Theme: science-paper — Academic paper */
+:root {
+  --shell:        #f8f8f8;
+  --surface:      #ffffff;
+  --surface-2:    #fafafa;
+  --surface-3:    #f5f5f5;
+  --text:         #1a1a1a;
+  --text-2:       #4a4a4a;
+  --text-mute:    #8a8a8a;
+  --text-faint:   #b0b0b0;
+  --rule:         #e0e0e0;
+  --accent:       #0066cc;
+  --accent-soft:  rgba(0, 102, 204, 0.08);
+  --accent-glow:  rgba(0, 102, 204, 0.30);
+
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-display-en: "Computer Modern", "Times New Roman", serif;
+  --font-body:       "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-mono:       "JetBrains Mono", "Courier New", monospace;
+
+  --r-card:       0;
+  --r-stage:      0;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-mono);
+  --hero-num-style:  normal;
+  --hero-num-weight: 500;
+  --stage-pad-x:  120px;
+  --stage-pad-y:  80px;
+}

@@ -1,0 +1,15 @@
+{
+  "id": "notebook",
+  "name": "Notebook",
+  "nameZh": "笔记本",
+  "description": "Notebook paper. Lined paper, handwritten annotations, colorful sticky notes. Study feel.",
+  "descriptionZh": "笔记本纸风。横线纸 + 手写标注 + 彩色便签。学习感。",
+  "mood": ["casual", "handwritten", "study", "warm"],
+  "bestFor": ["学习笔记", "复习", "总结", "自学"],
+  "preview": {
+    "shell": "#f0ebe0",
+    "surface": "#fefcf7",
+    "text": "#2c3e50",
+    "accent": "#e74c3c"
+  }
+}

@@ -1,0 +1,39 @@
+/* Theme: notebook — Notebook paper */
+:root {
+  --shell:        #f0ebe0;
+  --surface:      #fefcf7;
+  --surface-2:    #f8f4ec;
+  --surface-3:    #f0ebe0;
+  --text:         #2c3e50;
+  --text-2:       #34495e;
+  --text-mute:    #7f8c8d;
+  --text-faint:   #bdc3c7;
+  --rule:         #d5dbdb;
+  --accent:       #e74c3c;
+  --accent-soft:  rgba(231, 76, 60, 0.10);
+  --accent-glow:  rgba(231, 76, 60, 0.35);
+
+  --font-display-cn: "ZCOOL XiaoWei", "Ma Shan Zheng", serif;
+  --font-display-en: "Caveat", "Patrick Hand", cursive;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       var(--r-sm);
+  --r-stage:      4px;
+  --rule-w:       1px;
+  --rule-style:   dashed;
+  --hero-num-font:   var(--font-display-en);
+  --hero-num-style:  normal;
+  --hero-num-weight: 400;
+  --stage-pad-x:  100px;
+  --stage-pad-y:  80px;
+
+  --surface-pattern: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 31px,
+    rgba(44, 62, 80, 0.08) 31px,
+    rgba(44, 62, 80, 0.08) 32px
+  );
+  --surface-pattern-size: 100% 32px;
+}

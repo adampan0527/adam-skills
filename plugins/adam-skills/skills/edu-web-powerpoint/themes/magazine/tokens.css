@@ -1,0 +1,30 @@
+/* Theme: magazine — Editorial magazine */
+:root {
+  --shell:        #f0ece4;
+  --surface:      #faf8f2;
+  --surface-2:    #f0ece4;
+  --surface-3:    #e8e4dc;
+  --text:         #1a1a1a;
+  --text-2:       #3a3a3a;
+  --text-mute:    #7a7a7a;
+  --text-faint:   #aaaaaa;
+  --rule:         #d0ccc4;
+  --accent:       #c41e3a;
+  --accent-soft:  rgba(196, 30, 58, 0.08);
+  --accent-glow:  rgba(196, 30, 58, 0.35);
+
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-display-en: "Playfair Display", "Instrument Serif", Georgia, serif;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       0;
+  --r-stage:      0;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-display-en);
+  --hero-num-style:  italic;
+  --hero-num-weight: 400;
+  --stage-pad-x:  140px;
+  --stage-pad-y:  100px;
+}

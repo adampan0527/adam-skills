@@ -1,0 +1,15 @@
+{
+  "id": "magazine",
+  "name": "Magazine",
+  "nameZh": "编辑杂志",
+  "description": "Editorial magazine. Cream background, serif headlines, strong contrast. Stylish, sophisticated.",
+  "descriptionZh": "编辑杂志风。奶油底 + 衬线标题 + 强对比。有格调。",
+  "mood": ["editorial", "stylish", "serif", "sophisticated"],
+  "bestFor": ["新闻", "传媒", "社会科学", "人文学科"],
+  "preview": {
+    "shell": "#f0ece4",
+    "surface": "#faf8f2",
+    "text": "#1a1a1a",
+    "accent": "#c41e3a"
+  }
+}

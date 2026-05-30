@@ -1,0 +1,15 @@
+{
+  "id": "handwritten",
+  "name": "Handwritten",
+  "nameZh": "暖色手写",
+  "description": "Warm handwritten. Cream paper, handwritten text, colorful annotations. Friendly, approachable.",
+  "descriptionZh": "暖色手写风。米纸 + 手写字 + 彩色标注。亲切、轻松。",
+  "mood": ["warm", "handwritten", "friendly", "casual"],
+  "bestFor": ["非正式教学", "辅导", "少儿教育", "入门讲解"],
+  "preview": {
+    "shell": "#f5f0e8",
+    "surface": "#fefcf7",
+    "text": "#3d3428",
+    "accent": "#e76f51"
+  }
+}

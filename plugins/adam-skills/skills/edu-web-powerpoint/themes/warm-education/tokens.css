@@ -1,0 +1,30 @@
+/* Theme: warm-education — Warm and friendly */
+:root {
+  --shell:        #f5ede4;
+  --surface:      #fefcf8;
+  --surface-2:    #f8f2ea;
+  --surface-3:    #f0e8dc;
+  --text:         #3d3428;
+  --text-2:       #5c4f3d;
+  --text-mute:    #8a7d6b;
+  --text-faint:   #b0a590;
+  --rule:         #e0d8cc;
+  --accent:       #e07c4f;
+  --accent-soft:  rgba(224, 124, 79, 0.12);
+  --accent-glow:  rgba(224, 124, 79, 0.40);
+
+  --font-display-cn: "Noto Sans SC", "PingFang SC", sans-serif;
+  --font-display-en: "Nunito", "Poppins", sans-serif;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       var(--r-lg);
+  --r-stage:      16px;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-display-en);
+  --hero-num-style:  normal;
+  --hero-num-weight: 700;
+  --stage-pad-x:  100px;
+  --stage-pad-y:  80px;
+}

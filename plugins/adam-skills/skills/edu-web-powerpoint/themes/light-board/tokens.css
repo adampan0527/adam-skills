@@ -1,0 +1,32 @@
+/* Theme: light-board — Light board blue */
+:root {
+  --shell:        #0a1628;
+  --surface:      #0f2847;
+  --surface-2:    #163356;
+  --surface-3:    #1d3e65;
+  --text:         #e0e8f0;
+  --text-2:       #b0c4d8;
+  --text-mute:    #607890;
+  --text-faint:   #405060;
+  --rule:         rgba(224, 232, 240, 0.15);
+  --accent:       #00e5ff;
+  --accent-soft:  rgba(0, 229, 255, 0.10);
+  --accent-glow:  rgba(0, 229, 255, 0.40);
+
+  --font-display-cn: "Noto Sans SC", sans-serif;
+  --font-display-en: "Inter", "Helvetica Neue", sans-serif;
+  --font-body:       "Noto Sans SC", "Inter", sans-serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       var(--r-sm);
+  --r-stage:      4px;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-mono);
+  --hero-num-style:  normal;
+  --hero-num-weight: 500;
+  --stage-pad-x:  100px;
+  --stage-pad-y:  80px;
+
+  --text-shadow: 0 0 6px rgba(224, 232, 240, 0.3);
+}

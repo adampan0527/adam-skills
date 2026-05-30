@@ -1,0 +1,32 @@
+/* Theme: ink-wash — Chinese ink wash */
+:root {
+  --shell:        #f5f0e8;
+  --surface:      #faf8f2;
+  --surface-2:    #f0ece0;
+  --surface-3:    #e8e4d8;
+  --text:         #2c2c2c;
+  --text-2:       #4a4a4a;
+  --text-mute:    #8a8a7a;
+  --text-faint:   #b0b0a0;
+  --rule:         #d0ccc0;
+  --accent:       #8b4513;
+  --accent-soft:  rgba(139, 69, 19, 0.10);
+  --accent-glow:  rgba(139, 69, 19, 0.35);
+
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  --font-display-en: "Playfair Display", Georgia, serif;
+  --font-body:       "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-mono:       "JetBrains Mono", monospace;
+
+  --r-card:       var(--r-xs);
+  --r-stage:      0;
+  --rule-w:       1px;
+  --rule-style:   solid;
+  --hero-num-font:   var(--font-display-cn);
+  --hero-num-style:  normal;
+  --hero-num-weight: 700;
+  --stage-pad-x:  140px;
+  --stage-pad-y:  100px;
+
+  --surface-vignette: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.06) 100%);
+}

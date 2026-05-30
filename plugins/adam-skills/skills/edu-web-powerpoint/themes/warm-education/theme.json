@@ -1,0 +1,15 @@
+{
+  "id": "warm-education",
+  "name": "Warm Education",
+  "nameZh": "暖色教育",
+  "description": "Warm and friendly. Soft warm background, rounded corners, gentle colors. Approachable, inclusive.",
+  "descriptionZh": "暖色友好。柔暖底 + 圆角 + 柔和色彩。亲切、包容。",
+  "mood": ["warm", "friendly", "soft", "inclusive"],
+  "bestFor": ["K-12", "入门教育", "软技能", "团队培训"],
+  "preview": {
+    "shell": "#f5ede4",
+    "surface": "#fefcf8",
+    "text": "#3d3428",
+    "accent": "#e07c4f"
+  }
+}

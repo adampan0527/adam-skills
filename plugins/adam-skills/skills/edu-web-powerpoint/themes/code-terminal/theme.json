@@ -1,0 +1,15 @@
+{
+  "id": "code-terminal",
+  "name": "Code Terminal",
+  "nameZh": "代码终端",
+  "description": "Dark terminal green. Deep black + green mono text + scanlines. The programmer's classroom.",
+  "descriptionZh": "暗色终端风。深黑 + 绿色等宽字 + 扫描线。程序员的课堂。",
+  "mood": ["dark", "technical", "terminal", "hacker"],
+  "bestFor": ["编程课程", "CS 教育", "技术教程", "代码演示"],
+  "preview": {
+    "shell": "#0a0a0a",
+    "surface": "#0d1117",
+    "text": "#00ff41",
+    "accent": "#00d4ff"
+  }
+}
