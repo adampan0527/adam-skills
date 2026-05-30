@@ -27,7 +27,13 @@ adam-skills/
 
 ### 通过 Claude Code 市场安装（推荐）
 
-在 Claude Code 会话中使用 `/plugin` 命令直接安装：
+首先，在 Claude Code 中将本仓库添加为市场源：
+
+```
+/plugin marketplace add adampan0527/adam-skills
+```
+
+然后安装技能：
 
 ```
 /plugin install adampan0527/adam-skills

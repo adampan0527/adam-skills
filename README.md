@@ -25,7 +25,13 @@ adam-skills/
 
 ### Via Claude Code Marketplace (Recommended)
 
-Install directly from within a Claude Code session using the `/plugin` command:
+First, add this repository as a marketplace source in Claude Code:
+
+```
+/plugin marketplace add adampan0527/adam-skills
+```
+
+Then install the skills:
 
 ```
 /plugin install adampan0527/adam-skills
