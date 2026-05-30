@@ -2,63 +2,69 @@
 
 [English](README.md) | 中文
 
-一个用于 [Claude Code](https://claude.ai/code) 的个人技能库。每个技能是一个独立的 Markdown 文件，提供特定领域的指令，可通过斜杠命令在 Claude Code 会话中调用。
+一个用于 [Claude Code](https://claude.ai/code) 的个人技能库，以插件市场形式打包。每个技能是一个独立的 `SKILL.md` 文件，提供特定领域的指令，可通过斜杠命令在 Claude Code 会话中调用。
 
 ## 什么是技能（Skills）？
 
-技能是 `.md` 格式的 Markdown 文件，在 Claude Code 中通过 `/<技能名>` 触发时，会被展开为完整的提示词注入到对话中。它们封装了可复用的模式、工作流和领域知识——涵盖从动画框架到 CLI 适配器再到搜索工具的方方面面。
+技能是 `SKILL.md` 格式的 Markdown 文件，在 Claude Code 中通过 `/<技能名>` 触发时，会被展开为完整的提示词注入到对话中。它们封装了可复用的模式、工作流和领域知识——涵盖从动画框架到 CLI 适配器再到搜索工具的方方面面。
 
 ## 仓库结构
 
 ```
 adam-skills/
-├── CLAUDE.md            # Claude Code 项目指引
-├── LICENSE              # MIT 许可证
+├── .claude-plugin/
+│   └── marketplace.json         # 市场清单
+├── plugins/
+│   └── adam-skills/
+│       ├── .claude-plugin/
+│       │   └── plugin.json      # 插件清单
+│       └── skills/
+│           └── <技能名>/
+│               └── SKILL.md     # 技能定义
+├── skills/                      # 技能的开发副本
+├── CLAUDE.md
+├── LICENSE
 ├── README.md
-├── README_CN.md         # 中文说明文档
-└── skills/
-    ├── <分类目录>/      # 例如 animation、dev-tools、search
-    │   ├── 技能-a.md
-    │   └── 技能-b.md
-    └── ...
+└── README_CN.md
 ```
 
 ## 安装方式
 
-### 通过 Claude Code 市场安装（推荐）
+### 通过 Claude Code 插件市场安装（推荐）
 
-首先，在 Claude Code 中将本仓库添加为市场源：
+**第一步 — 添加市场源：**
 
 ```
 /plugin marketplace add adampan0527/adam-skills
 ```
 
-然后安装技能：
+此命令会克隆仓库并将其注册为已知市场。
+
+**第二步 — 安装插件：**
 
 ```
-/plugin install adampan0527/adam-skills
+/plugin install adam-skills@adam-skills
 ```
 
-Claude Code 会自动拉取仓库并将 `skills/` 下的所有技能注册到当前环境。安装完成后即可通过斜杠命令立即使用。
+Claude Code 读取 `.claude-plugin/marketplace.json`，找到插件条目，并注册 `plugins/adam-skills/skills/` 下的所有技能。
 
-更新到最新版本：
-
-```
-/plugin update adampan0527/adam-skills
-```
-
-查看已安装的插件：
+**第三步 — 使用技能：**
 
 ```
-/plugin list
+/<技能名>
 ```
 
-### 通过命令行添加（CLI）
-
-在命令行中将本仓库添加为技能源：
+#### 其他插件命令
 
 ```bash
-claude skill add https://github.com/adampan0527/adam-skills.git
+# 更新到最新版本
+/plugin update adam-skills@adam-skills
+
+# 查看已安装的插件
+/plugin list
+
+# 查看插件详情
+/plugin details adam-skills@adam-skills
 ```
 
 ### 手动安装
@@ -69,35 +75,15 @@ claude skill add https://github.com/adampan0527/adam-skills.git
 git clone https://github.com/adampan0527/adam-skills.git
 ```
 
-## 使用方法
-
-安装完成后，在 Claude Code 会话中通过斜杠命令调用技能：
-
-```
-/<技能名>
-```
-
-例如，若 `skills/animation/` 下有一个名为 `gsap` 的技能：
-
-```
-/gsap
-```
-
 ## 创建新技能
 
-1. 在 `skills/` 下选择或创建分类目录：
+1. 创建技能目录：
 
    ```bash
-   mkdir -p skills/<分类>
+   mkdir -p plugins/adam-skills/skills/<技能名>
    ```
 
-2. 创建新的 Markdown 文件：
-
-   ```bash
-   touch skills/<分类>/<技能名>.md
-   ```
-
-3. 添加必需的 frontmatter 元数据和正文内容：
+2. 创建 `SKILL.md` 并添加必需的 frontmatter：
 
    ```markdown
    ---
@@ -110,7 +96,7 @@ git clone https://github.com/adampan0527/adam-skills.git
    [指令、模式和参考资料写在这里。]
    ```
 
-4. 在 Claude Code 中输入 `/<技能名>` 进行测试。
+3. 在 Claude Code 中输入 `/<技能名>` 进行测试。
 
 ### 编写规范
 

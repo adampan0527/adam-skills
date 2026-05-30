@@ -4,30 +4,44 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a multi-skill repository for Claude Code. Each skill is a markdown file (`.md`) that provides domain-specific instructions invoked via slash commands in Claude Code. Skills are organized by topic in subdirectories under `skills/`.
+This is a Claude Code plugin marketplace containing Adam's personal skill collection. The repo follows the official Claude Code plugin structure and can be installed via `/plugin marketplace add`.
 
 ## Repository Structure
 
 ```
 adam-skills/
+├── .claude-plugin/
+│   └── marketplace.json         # Marketplace catalog (required for /plugin)
+├── plugins/
+│   └── adam-skills/
+│       ├── .claude-plugin/
+│       │   └── plugin.json      # Plugin manifest (required)
+│       └── skills/
+│           └── <skill-name>/
+│               └── SKILL.md     # Skill definition with YAML frontmatter
+├── skills/                      # Source/development copies of skills (not used by plugin system)
 ├── CLAUDE.md
-├── skills/
-│   ├── <category>/
-│   │   ├── <skill-name>.md
-│   │   └── ...
-│   └── ...
-└── ...
+├── LICENSE
+├── README.md
+└── README_CN.md
 ```
 
-## Skill File Conventions
+## Key Conventions
 
-- Each skill lives in `skills/<category>/<skill-name>.md`
-- Category names are lowercase, hyphenated (e.g., `video`, `animation`, `dev-tools`)
-- Skill filenames are lowercase, hyphenated, matching the slash command name
-- Each skill file must start with a YAML frontmatter block containing `name` and `description`
-- Skill content is written in Markdown and should be self-contained — it will be expanded and injected into the conversation when invoked
+### Plugin System Files
 
-## Skill File Template
+- `.claude-plugin/marketplace.json` — marketplace index, lists all plugins with their `source` paths
+- `.claude-plugin/plugin.json` — per-plugin manifest (name, version, description)
+- Skills must be placed under `plugins/<plugin>/skills/<name>/SKILL.md` to be recognized by the plugin system
+
+### Skill Files (SKILL.md)
+
+- Each skill lives in `plugins/adam-skills/skills/<skill-name>/SKILL.md`
+- Skill directory names are lowercase, hyphenated (e.g., `css-animations`, `smart-search`)
+- Each SKILL.md must start with YAML frontmatter containing `name` and `description`
+- The `description` field controls when Claude Code auto-selects the skill
+
+### Skill File Template
 
 ```markdown
 ---
@@ -42,13 +56,16 @@ description: Short description of what this skill does and when to use it.
 
 ## Adding a New Skill
 
-1. Choose or create a category under `skills/`
-2. Create the `.md` file using the template above
+1. Create the skill directory:
+   ```bash
+   mkdir -p plugins/adam-skills/skills/<skill-name>
+   ```
+2. Create `SKILL.md` using the template above
 3. Ensure the `description` field clearly states when the skill should be triggered
-4. Test by invoking the skill with `/<skill-name>` in Claude Code
+4. Test by invoking `/<skill-name>` in Claude Code
 
 ## Notes
 
-- Skills should be concise and actionable — avoid verbose explanations
+- The `skills/` directory at the repo root is for development/reference copies only; the plugin system reads from `plugins/adam-skills/skills/`
+- Skills should be concise and actionable
 - Keep each skill focused on a single domain or task pattern
-- If a skill depends on external tools or APIs, document prerequisites at the top of the file

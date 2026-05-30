@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "adam-skills",
+  "version": "1.0.0",
+  "description": "Adam's personal skill library for Claude Code — animation frameworks, video production, dev tools, search, and more.",
+  "owner": {
+    "name": "Yan Pan",
+    "url": "https://github.com/adampan0527"
+  },
+  "plugins": [
+    {
+      "name": "adam-skills",
+      "description": "Adam's personal skill collection including animation adapters, video composition, CLI tools, and search utilities.",
+      "version": "1.0.0",
+      "source": "./plugins/adam-skills",
+      "category": "development"
+    }
+  ]
+}
