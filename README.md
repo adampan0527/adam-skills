@@ -23,9 +23,31 @@ adam-skills/
 
 ## Installation
 
-### As a Global Skill Source
+### Via Claude Code Marketplace (Recommended)
 
-Add this repository as a skill source in your Claude Code settings:
+Install directly from within a Claude Code session using the `/plugin` command:
+
+```
+/plugin install adampan0527/adam-skills
+```
+
+Claude Code will fetch the repository and register all skills under `skills/` automatically. Once installed, the skills are available immediately via slash commands.
+
+To update to the latest version:
+
+```
+/plugin update adampan0527/adam-skills
+```
+
+To list installed plugins:
+
+```
+/plugin list
+```
+
+### As a Global Skill Source (CLI)
+
+Add this repository as a skill source via the command line:
 
 ```bash
 claude skill add https://github.com/adampan0527/adam-skills.git

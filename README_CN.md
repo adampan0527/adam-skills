@@ -25,9 +25,31 @@ adam-skills/
 
 ## 安装方式
 
-### 作为全局技能源
+### 通过 Claude Code 市场安装（推荐）
 
-在 Claude Code 设置中添加本仓库作为技能源：
+在 Claude Code 会话中使用 `/plugin` 命令直接安装：
+
+```
+/plugin install adampan0527/adam-skills
+```
+
+Claude Code 会自动拉取仓库并将 `skills/` 下的所有技能注册到当前环境。安装完成后即可通过斜杠命令立即使用。
+
+更新到最新版本：
+
+```
+/plugin update adampan0527/adam-skills
+```
+
+查看已安装的插件：
+
+```
+/plugin list
+```
+
+### 通过命令行添加（CLI）
+
+在命令行中将本仓库添加为技能源：
 
 ```bash
 claude skill add https://github.com/adampan0527/adam-skills.git
