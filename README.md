@@ -1,118 +1,108 @@
 # Adam's Skills
 
-A personal skill library for [Claude Code](https://claude.ai/code), packaged as a plugin marketplace. Each skill is a self-contained markdown file that provides domain-specific instructions, invoked as slash commands during Claude Code sessions.
+[Claude Code](https://claude.ai/code) 个人技能库，以插件形式发布。每个 skill 是一个 `SKILL.md` 文件，通过 `/<skill-name>` 触发，为 Claude 注入特定领域的专业知识和工作流。
 
-## What Are Skills?
+## 安装
 
-Skills are `SKILL.md` files that expand into prompts when triggered via `/<skill-name>` in Claude Code. They encapsulate reusable patterns, workflows, and domain knowledge — from animation frameworks to CLI adapters to search utilities.
+**Step 1 — 添加市场源（只需执行一次）：**
 
-## Repository Structure
-
-```
-adam-skills/
-├── .claude-plugin/
-│   └── marketplace.json         # Marketplace catalog
-├── plugins/
-│   └── adam-skills/
-│       ├── .claude-plugin/
-│       │   └── plugin.json      # Plugin manifest
-│       └── skills/
-│           └── <skill-name>/
-│               └── SKILL.md     # Skill definition
-├── skills/                      # Development copies of skills
-├── CLAUDE.md
-├── LICENSE
-├── README.md
-└── README_CN.md
-```
-
-## Installation
-
-### Via Claude Code Plugin Marketplace (Recommended)
-
-**Step 1 — Add the marketplace source:**
+在 Claude Code 中运行：
 
 ```
 /plugin marketplace add adampan0527/adam-skills
 ```
 
-This clones the repository and registers it as a known marketplace.
-
-**Step 2 — Install the plugin:**
+**Step 2 — 安装插件：**
 
 ```
 /plugin install adam-skills@adam-skills
 ```
 
-Claude Code reads `.claude-plugin/marketplace.json`, finds the plugin entry, and registers all skills under `plugins/adam-skills/skills/`.
+**Step 3 — 重启 Claude Code 使插件生效。**
 
-**Step 3 — Use skills:**
+安装完成后，所有 skill 会自动注册为斜杠命令，直接输入 `/<skill-name>` 即可使用。
 
-```
-/<skill-name>
-```
-
-#### Other Plugin Commands
+### 其他插件命令
 
 ```bash
-# Update to the latest version
+# 更新到最新版本
 /plugin update adam-skills@adam-skills
 
-# List installed plugins
+# 查看已安装插件
 /plugin list
 
-# View plugin details
+# 查看插件详情
 /plugin details adam-skills@adam-skills
 ```
 
-### Manual Setup
+---
 
-Clone the repository and symlink or copy individual skill files into your Claude Code skill directory:
+## 当前 Skill 列表
+
+| Skill | 命令 | 说明 |
+|-------|------|------|
+| Edu Web PowerPoint | `/edu-web-powerpoint` | 给定教案 PDF/Word 或知识点大纲，生成教学用 16:9 网页演示（web-ppt），含实操案例 |
+
+---
+
+## Skill 详细介绍
+
+### `/edu-web-powerpoint`
+
+从教案文档（PDF / Word）或知识点 + 大纲出发，生成教学用"看起来像视频"的点击驱动 16:9 网页演示。
+
+**适用场景：**
+- "我有一个教案 PDF，帮我做成课堂演示"
+- "我有知识点 + 大纲，帮我做成 web-ppt"
+- 教学课件、培训材料、技术分享
+- 16:9 横屏演示，大字、留白、每屏有动效
+- 需要配套实操练习的教学场景
+
+**使用方式：**
+
+1. 进入一个空目录（或让 Claude 创建）
+2. 直接输入 `/edu-web-powerpoint`，然后描述你的需求：
+   - 给出教案 PDF 路径，或
+   - 给出知识点 + 大纲文本
+3. 按提示与 Claude 逐步对齐内容、大纲、主题风格，然后开始生成
+
+---
+
+## 给开发者：添加新 Skill
+
+如果你想 fork 这个仓库来创建自己的 skill：
+
+### 1. 创建 skill 目录
 
 ```bash
-git clone https://github.com/adampan0527/adam-skills.git
+mkdir -p plugins/adam-skills/skills/<skill-name>
 ```
 
-## Creating a New Skill
+### 2. 编写 SKILL.md
 
-1. Create the skill directory:
+```markdown
+---
+name: skill-name
+description: 一句话说明这个 skill 做什么、什么时候触发。
+---
 
-   ```bash
-   mkdir -p plugins/adam-skills/skills/<skill-name>
-   ```
+# Skill 名称
 
-2. Create `SKILL.md` with the required frontmatter:
+[具体指令、模式、参考材料……]
+```
 
-   ```markdown
-   ---
-   name: skill-name
-   description: Short description of when and why to use this skill.
-   ---
+### 3. 规范
 
-   # Skill Name
+- **一个 skill，一个领域** — 每个 skill 只解决一类问题
+- **命名规范** — 全小写，用连字符分隔，如 `css-animations`、`smart-search`
+- **description 很重要** — Claude 根据这个字段判断何时自动选中该 skill
+- **自包含** — skill 会被独立展开到对话中，所有必要上下文都要写进去
 
-   [Instructions, patterns, and reference material go here.]
-   ```
+### 4. 测试
 
-3. Test by invoking `/<skill-name>` in Claude Code.
+在 Claude Code 中输入 `/<skill-name>` 测试效果。
 
-### Guidelines
-
-- **One skill, one domain** — keep each skill focused on a single task or pattern.
-- **Lowercase, hyphenated names** — e.g. `css-animations`, `smart-search`.
-- **Clear trigger description** — the `description` field determines when Claude Code selects this skill.
-- **Self-contained** — include all necessary context; skills are expanded into the conversation independently.
-
-## Skill Categories
-
-| Category       | Description                              |
-| -------------- | ---------------------------------------- |
-| `animation`    | Animation framework adapters (GSAP, Anime.js, CSS, WAAPI, Three.js) |
-| `video`        | Video composition and production workflows |
-| `dev-tools`    | CLI adapters, development utilities      |
-| `search`       | Web search and information retrieval     |
-
-Categories will expand as new skills are added.
+---
 
 ## License
 
