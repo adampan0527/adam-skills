@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "adam-skills",
   "version": "1.0.0",
   "description": "Adam's personal skill library for Claude Code — animation frameworks, video production, dev tools, search, and more.",
