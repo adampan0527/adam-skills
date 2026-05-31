@@ -24,14 +24,24 @@ markdown，再由 agent 整理成结构化的 `knowledge.md`。
 
 ## 安装 markitdown
 
+**必须在 uv 虚拟环境中安装**（参见 SKILL.md「Python 环境约定」）：
+
 ```bash
-pip install markitdown
+# 创建并激活虚拟环境
+uv venv
+# Windows:
+.venv\Scripts\activate
+# macOS / Linux:
+source .venv/bin/activate
+
+# 安装 markitdown
+uv pip install markitdown
 ```
 
 如需处理图片中的文字（OCR）：
 
 ```bash
-pip install markitdown[all]
+uv pip install markitdown[all]
 ```
 
 **验证安装**：

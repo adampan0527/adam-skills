@@ -110,6 +110,10 @@ case-exercise/
 ## 学习目标
 - <这个案例让学生练习什么>
 
+## 环境准备
+1. <如有 Python 依赖：uv venv && .venv\Scripts\activate && uv pip install -r requirements.txt>
+2. <如有其他前置条件>
+
 ## 操作步骤
 1. <步骤 1>
 2. <步骤 2>
@@ -130,6 +134,7 @@ case-exercise/
 - **有注释**：关键代码有中文注释，方便学生理解
 - **有提示**：在关键步骤有注释或提示文字
 - **可修改**：学生能方便地修改参数、数据进行实验
+- **Python 案例**：必须附带 `requirements.txt`，README 中说明用 `uv venv` 创建虚拟环境后 `uv pip install -r requirements.txt` 安装依赖
 
 ### 案例文件夹命名
 

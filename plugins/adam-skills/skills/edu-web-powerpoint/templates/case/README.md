@@ -19,6 +19,12 @@ case-exercise/
 ## 学习目标
 - <这个案例让学生练习什么>
 
+## 环境准备
+<如为 Python 案例：>
+1. uv venv
+2. .venv\Scripts\activate（Windows）或 source .venv/bin/activate（macOS/Linux）
+3. uv pip install -r requirements.txt
+
 ## 操作步骤
 1. <步骤 1>
 2. <步骤 2>
@@ -38,3 +44,4 @@ case-exercise/
 - 有中文注释
 - 有操作提示
 - 学生能修改参数进行实验
+- Python 案例必须附带 `requirements.txt`，用 `uv` 管理虚拟环境

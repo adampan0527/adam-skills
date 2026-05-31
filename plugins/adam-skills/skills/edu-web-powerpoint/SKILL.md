@@ -22,6 +22,30 @@ TS 项目 + 实操案例文件夹。
 
 ---
 
+## Python 环境约定
+
+凡是需要用到 Python 的场景（文档预处理、Python 案例运行等），
+**一律使用 `uv` 创建虚拟环境**，不用系统 Python 直接装包。
+
+```bash
+# 创建虚拟环境
+uv venv
+
+# 激活（Windows）
+.venv\Scripts\activate
+
+# 激活（macOS / Linux）
+source .venv/bin/activate
+
+# 安装依赖
+uv pip install <package>
+```
+
+> **铁律**：不得使用 `pip install` 直接装到系统 Python。
+> 项目内 `.venv/` 是唯一的包安装目标。
+
+---
+
 ## 工作流总览
 
 ```
@@ -141,10 +165,12 @@ my-lesson/
 
 **简要流程**：
 
-1. **安装 markitdown**（若未安装）：`pip install markitdown`
-2. **转换文档**：`markitdown 教案.pdf -o 教案.md`（支持 PDF / Word / PPT 等）
-3. **整理成 knowledge.md**：agent 阅读转换结果，整理成结构化的知识点文档
-4. **进入 Phase 1**
+1. **创建虚拟环境**：`uv venv && .venv\Scripts\activate`（Windows）
+   或 `uv venv && source .venv/bin/activate`（macOS/Linux）
+2. **安装 markitdown**（若未安装）：`uv pip install markitdown`
+3. **转换文档**：`markitdown 教案.pdf -o 教案.md`（支持 PDF / Word / PPT 等）
+4. **整理成 knowledge.md**：agent 阅读转换结果，整理成结构化的知识点文档
+5. **进入 Phase 1**
 
 > **关键**：markitdown 转出的 markdown 可能有格式瑕疵（表格错位、图片丢失等），
 > agent 必须人工审查并修正后再进入 Phase 1。
@@ -324,6 +350,122 @@ rm -rf presentation/src/chapters/01-example
 
 改动 `chapters.ts` 后 bump `useStepper.ts` 的 `STORAGE_KEY`。
 
+### 2.6 导航与交互规范（强制）
+
+#### 全屏布局
+
+Web PPT 画面必须**铺满浏览器窗口**，左右上下无边距。
+
+```
+┌──────────┬────────────────────────────────────────┐
+│          │  顶部 step bar（章节名 | 步骤进度圆点）  │
+│  左侧    ├────────────────────────────────────────┤
+│  章节    │                                        │
+│  导航栏  │        1920×1080 缩放舞台              │
+│          │        （transform: scale）             │
+│  200px   │                                        │
+│          │                                        │
+└──────────┴────────────────────────────────────────┘
+```
+
+- 左侧导航栏（NavSidebar）：固定 200px 宽，列出所有 chapter，当前 chapter 高亮
+- 顶部步骤栏（StepBar）：显示当前 chapter 标题 + step 圆点 + 动画进度信息
+- 舞台：1920×1080 通过 `useStageScale(marginX=0, marginY=0)` 缩放填满剩余区域
+- 无 box-shadow、无外部 margin
+
+#### 点击驱动动画（铁律）
+
+**所有动画都是手动触发的**，禁止自动播放。
+
+架构：
+1. `ChapterDef.nAnim: number[]` —— 每个 step 的动画组数量
+2. `useStepper` 维护 `animStep`（-1 = 无动画可见，0 = 第 1 组可见……）
+3. 点击/右箭头/空格：先尝试 `advanceAnim()`，若无更多动画才切换 step
+4. 组件中用 `AnimGroup` + `Reveal` 实现：
+
+```tsx
+// AnimGroup：可见性门控（index > animStep 时返回 null）
+function AnimGroup({ index, animStep, children, style }) {
+  if (index > animStep) return null;
+  return <div style={style}>{children}</div>;
+}
+
+// Reveal：动画触发（mount 后加 .play 类）
+function Reveal({ delay = 0, children }) {
+  const ref = useRef(null);
+  const [play, setPlay] = useState(false);
+  useEffect(() => {
+    void ref.current?.offsetWidth;
+    const id = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setPlay(true)));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  return (
+    <div ref={ref} className={play ? "play" : ""} style={{ animationDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  );
+}
+```
+
+迁移规则：
+- 每个 `<AnimGroup>` 必须有 `index={N}` 和 `animStep={animStep}`（N 从 0 递增）
+- 带 `anim-*` className + `animationDelay` 的子元素，改用 `<Reveal delay={X}>` 包裹
+- `MaskReveal` 组件不需要 Reveal 包裹
+- `chapters.ts` 中 `nAnim` 数组的每个值 = 该 step 的 AnimGroup 最大 index + 1
+
+### 2.7 开发经验（实测归纳）
+
+以下规则在实际开发和用户验收过程中反复出现，属于强制规范。
+
+#### AnimGroup 结构规则
+
+1. **分隔线不能作为 AnimGroup 独立存在**
+
+   `<hr>`（`.rule`）等分隔元素如果单独放在 AnimGroup 中，会成为页面最后出现的动画，视觉上"以一根线结束"不合理。
+   - 合并到相邻 AnimGroup 中（和文字内容一起出现）
+   - 或转为 MaskReveal 自动播放
+
+2. **nAnim 必须与 AnimGroup 数量同步**
+
+   每次增减或重组 AnimGroup 后，必须同步更新 `chapters.ts` 中对应 step 的 `nAnim` 值，否则动画序列错位（提前进入下一步或点击无效）。
+
+3. **AnimGroup index 必须连续编号**
+
+   重组后必须从 0 开始重新编号，不能跳号。
+
+#### MaskReveal 使用禁忌
+
+4. **MaskReveal 子元素不能有负 margin**
+
+   MaskReveal 渲染为 `inline-block` 的 `<span>`，clip-path 基于 span 的 bounding box 计算。子元素的负 margin 会缩小 span 的边界，导致内容被裁剪（只显示一半）。
+   - 删除负 margin，或用包裹 div 隔离
+
+#### 排版与重叠
+
+5. **备注/注释文字不能使用负 margin-top**
+
+   步骤下方的备注文字（`.step-note` 等）使用负 margin-top 会向上侵入数组格子或动画元素的空间，导致文字与元素重叠。应使用正值 margin-top 提供间距。
+   - 完工后必须用 Playwright 截图逐 step 检查是否有元素重叠
+
+6. **每个 step 的排序演示必须同时展示起始状态和操作后状态**
+
+   每个步骤应呈现"操作前 → 操作后"的对比：左侧/上方显示操作前的数组状态，箭头右侧/下方显示执行后的数组状态，让学生清晰看到这一步做了什么。
+
+7. **边界条件要准确**
+
+   算法模拟中的边界判断必须完整。例如插入排序中，索引为 0 的元素也必须参与比较（`while (j >= 0 && ...)`，不是 `j > 0`），否则首元素无法被正确处理。
+
+#### React 渲染陷阱
+
+8. **列表 key 不能使用可能重复的计算值**
+
+   用 `pulledIdx` 等可能跨步骤重复的值作为 key，会导致 React DOM 复用错乱。应使用步骤索引 `i` 等稳定唯一值。
+
+9. **TSX 中使用直接 UTF-8 字符，不用 JS 转义序列**
+
+   `\u00B²` 在 TSX 中会作为字面文本渲染，应直接写 `²`。
+
 ---
 
 ## Phase 3 —— 实操案例文件夹生成
@@ -378,10 +520,10 @@ case-exercise/ 可以打包发给学生。
 | 2 | 全局 step 计数器 | 章节是 step 的纯函数，无定时器 |
 | 3 | 每步独占整屏 | `if (step === N) return <FullScene />` |
 | 4 | 教学节拍 = step | 一节拍 = 一 step = 一聚焦想法 |
-| 5 | 隐藏的边角控件 | 进度条 / 翻页器默认 opacity 0 |
-| 6 | 舞台无 chrome | 没有 header / footer / 页码 |
+| 5 | 左侧章节 + 顶部步骤 | 左侧导航栏始终展示所有 chapter，顶部展示当前 chapter 的 steps |
+| 6 | 全屏无 chrome | 画面铺满浏览器，无 header/footer/page-number，舞台无 box-shadow |
 | 7 | **内容驱动动画** | 先找内在动作，找不到才入场动画兜底 |
-| 8 | 多点逐个揭示 | 1 项 = 1 step，禁同步 stagger |
+| 8 | 点击逐组揭示 | 每个 AnimGroup = 一次点击，禁止自动播放，nAnim 控制每步点击数 |
 | 9 | 整片同一主题 | 颜色 / 字体走 token |
 | 10 | 双源原则 | teach-script 定节拍，knowledge.md 定画面密度 |
 
