@@ -151,7 +151,7 @@ my-lesson/
 | Phase 1.1-1.2 内容编写 | `references/SCRIPT-STYLE.md` + `references/OUTLINE-FORMAT.md` + `knowledge.md` | —— |
 | **Checkpoint Plan 选主题** | —— | `themes/*/theme.json`（动态读全部）；`references/THEMES.md` |
 | Phase 2.1 脚手架 | —— | SKILL.md 本节看一次 |
-| **Phase 2.4 实现单章** | **`references/CHAPTER-CRAFT.md`** 单一入口 + 当前主题 `theme.json` + outline.md 段落 + knowledge.md 对应段落 | `references/EXAMPLES/`；`references/THEMES.md` |
+| **Phase 2.4 实现单章** | **`references/CHAPTER-CRAFT.md`** 单一入口 + 当前主题 `theme.json` + outline.md 段落 + knowledge.md 对应段落 | `references/CHAPTER-EXAMPLES.md`；`references/THEMES.md` |
 | Phase 3 实操案例 | `references/CASES.md` | —— |
 
 ---
@@ -302,7 +302,7 @@ Agent 列出所有案例，给出推荐，**等用户回复后才能继续**。
 ### 2.1 脚手架
 
 ```bash
-bash <path-to-edu-web-powerpoint>/scripts/scaffold.sh \
+bash <path-to-edu-web-powerpoint>/templates/scaffold.sh \
   ./presentation \
   --theme=<用户选的主题 id>
 ```
@@ -352,26 +352,51 @@ rm -rf presentation/src/chapters/01-example
 
 ### 2.6 导航与交互规范（强制）
 
-#### 全屏布局
+#### 导航与全屏布局（强制）
 
 Web PPT 画面必须**铺满浏览器窗口**，左右上下无边距。
+**所有导航（左侧章节栏、顶部步骤条）必须嵌在 1920×1080 舞台内部**，
+跟章节内容一起随 `transform: scale` 缩放；不允许作为浏览器级 chrome
+挂在舞台外面。
 
 ```
-┌──────────┬────────────────────────────────────────┐
-│          │  顶部 step bar（章节名 | 步骤进度圆点）  │
-│  左侧    ├────────────────────────────────────────┤
-│  章节    │                                        │
-│  导航栏  │        1920×1080 缩放舞台              │
-│          │        （transform: scale）             │
-│  200px   │                                        │
-│          │                                        │
-└──────────┴────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│  顶部 step bar（章节名 | 步骤进度圆点 | 动画进度）  ◀ 嵌内部 │
+│  ─────────────────────────────────────────────────────────  │
+│ ┌──────┐                                                    │
+│ │      │                                                    │
+│ │ 左侧 │            1920×1080 缩放舞台                       │
+│ │ 章节 │            （transform: scale）                    │
+│ │ 导航 │                                                    │
+│ │      │                                                    │
+│ │ ~150 │                                                    │
+│ │ px   │                                                    │
+│ └──────┘                                                    │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-- 左侧导航栏（NavSidebar）：固定 200px 宽，列出所有 chapter，当前 chapter 高亮
-- 顶部步骤栏（StepBar）：显示当前 chapter 标题 + step 圆点 + 动画进度信息
-- 舞台：1920×1080 通过 `useStageScale(marginX=0, marginY=0)` 缩放填满剩余区域
-- 无 box-shadow、无外部 margin
+**实现要点**：
+
+- 浏览器外层 (`html` / `body` / `app-shell`) **没有任何 chrome** —— 不放
+  sidebar、不放 topbar、不放品牌条
+- `NavSidebar` 和 `StepBar` 都是 `.stage-frame` 的**直接子元素**，
+  `position: absolute; top: 0; left: 0`（或 `left: var(--nav-rail-w)`）
+- 推荐尺寸：侧栏 150~160px、顶栏 50~60px（比外挂式瘦，避免抢走内容空间）
+- 导航用半透明 + `backdrop-filter: blur` 跟舞台 surface 融为一体，
+  背景建议 `var(--shell)` 加 0.7~0.8 透明度
+- 内容区 `.scene` / `.scene-pad` 留出 padding：
+  `padding: calc(var(--nav-top-h) + 32px) 64px 56px calc(var(--nav-rail-w) + 40px)`
+- 缩放公式不变：`useStageScale(baseW=1920, baseH=1080, marginX=0, marginY=0)`
+  让 Stage 占满整个浏览器视口
+
+**为什么这样设计**：
+
+- **风格一致**：导航和内容共用 surface / accent token，
+  不会出现"PPT 外面套了个深色 sidebar 显得突兀"
+- **不额外占据空间**：所有内容都在 1920×1080 设计边界内，
+  缩放时 nav 和文字一起等比缩放，不会出现"PPT 占中间、nav 占两边"
+  的割裂感
+- **导出 / 截图 / 录屏统一**：全屏截图包含导航，PPT 截屏就是完整产物
 
 #### 点击驱动动画（铁律）
 
@@ -520,7 +545,7 @@ case-exercise/ 可以打包发给学生。
 | 2 | 全局 step 计数器 | 章节是 step 的纯函数，无定时器 |
 | 3 | 每步独占整屏 | `if (step === N) return <FullScene />` |
 | 4 | 教学节拍 = step | 一节拍 = 一 step = 一聚焦想法 |
-| 5 | 左侧章节 + 顶部步骤 | 左侧导航栏始终展示所有 chapter，顶部展示当前 chapter 的 steps |
+| 5 | 导航嵌在舞台内部 | 侧栏 / 顶栏是舞台子元素，一起 scale 缩放，不外挂 |
 | 6 | 全屏无 chrome | 画面铺满浏览器，无 header/footer/page-number，舞台无 box-shadow |
 | 7 | **内容驱动动画** | 先找内在动作，找不到才入场动画兜底 |
 | 8 | 点击逐组揭示 | 每个 AnimGroup = 一次点击，禁止自动播放，nAnim 控制每步点击数 |
@@ -540,4 +565,4 @@ case-exercise/ 可以打包发给学生。
 | [`references/CHAPTER-CRAFT.md`](references/CHAPTER-CRAFT.md) | **Phase 2.4 每章必读** | 视觉演示 + 逐步揭示 + 反 AI 味 + 代码红线 + 完工自检 |
 | [`references/THEMES.md`](references/THEMES.md) | 选 / 造主题时 | 完整 token 契约 + 主题清单 |
 | [`themes/`](themes) | Checkpoint Plan 时翻 | 内置主题 |
-| [`scripts/scaffold.sh`](scripts/scaffold.sh) | Phase 2.1 跑一次 | 一键项目脚手架 |
+| [`templates/scaffold.sh`](templates/scaffold.sh) | Phase 2.1 跑一次 | 一键项目脚手架 |

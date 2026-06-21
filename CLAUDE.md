@@ -15,11 +15,13 @@ adam-skills/
 ├── plugins/
 │   └── adam-skills/
 │       ├── .claude-plugin/
-│       │   └── plugin.json      # Plugin manifest (required)
+│       │   └── plugin.json      # Plugin manifest (required, no $schema field)
 │       └── skills/
 │           └── <skill-name>/
-│               └── SKILL.md     # Skill definition with YAML frontmatter
-├── skills/                      # Source/development copies of skills (not used by plugin system)
+│               ├── SKILL.md            # Skill definition with YAML frontmatter
+│               ├── references/         # Reference docs loaded by SKILL.md
+│               ├── templates/          # Project scaffold (HTML/TSX/CSS/config)
+│               └── themes/             # Theme tokens (JSON + CSS)
 ├── CLAUDE.md
 ├── LICENSE
 ├── README.md
@@ -30,9 +32,9 @@ adam-skills/
 
 ### Plugin System Files
 
-- `.claude-plugin/marketplace.json` — marketplace index, lists all plugins with their `source` paths
-- `.claude-plugin/plugin.json` — per-plugin manifest (name, version, description)
-- Skills must be placed under `plugins/<plugin>/skills/<name>/SKILL.md` to be recognized by the plugin system
+- `.claude-plugin/marketplace.json` — marketplace index, lists all plugins with their `source` paths. **Do not** include `$schema`.
+- `.claude-plugin/plugin.json` — per-plugin manifest (name, version, description). **Do not** include `$schema`.
+- Skills must be placed under `plugins/<plugin>/skills/<name>/SKILL.md` to be recognized by the plugin system.
 
 ### Skill Files (SKILL.md)
 
@@ -61,11 +63,12 @@ description: Short description of what this skill does and when to use it.
    mkdir -p plugins/adam-skills/skills/<skill-name>
    ```
 2. Create `SKILL.md` using the template above
-3. Ensure the `description` field clearly states when the skill should be triggered
-4. Test by invoking `/<skill-name>` in Claude Code
+3. Optionally add `references/`, `templates/`, `themes/` subdirectories for supporting content
+4. Ensure the `description` field clearly states when the skill should be triggered
+5. Test by invoking `/<skill-name>` in Claude Code
 
 ## Notes
 
-- The `skills/` directory at the repo root is for development/reference copies only; the plugin system reads from `plugins/adam-skills/skills/`
 - Skills should be concise and actionable
 - Keep each skill focused on a single domain or task pattern
+- Avoid single-file subdirectories — keep reference docs flat (e.g., `references/CHAPTER-EXAMPLES.md`, not `references/EXAMPLES/README.md`)
