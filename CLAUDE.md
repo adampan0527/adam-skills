@@ -13,7 +13,7 @@ adam-skills/
 ├── .claude-plugin/
 │   └── marketplace.json         # Marketplace catalog (required for /plugin)
 ├── plugins/
-│   └── adam-skills/
+│   └── edu/
 │       ├── .claude-plugin/
 │       │   └── plugin.json      # Plugin manifest (required, no $schema field)
 │       └── skills/
@@ -38,7 +38,7 @@ adam-skills/
 
 ### Skill Files (SKILL.md)
 
-- Each skill lives in `plugins/adam-skills/skills/<skill-name>/SKILL.md`
+- Each skill lives in `plugins/edu/skills/<skill-name>/SKILL.md`
 - Skill directory names are lowercase, hyphenated (e.g., `css-animations`, `smart-search`)
 - Each SKILL.md must start with YAML frontmatter containing `name` and `description`
 - The `description` field controls when Claude Code auto-selects the skill
@@ -60,7 +60,7 @@ description: Short description of what this skill does and when to use it.
 
 1. Create the skill directory:
    ```bash
-   mkdir -p plugins/adam-skills/skills/<skill-name>
+   mkdir -p plugins/edu/skills/<skill-name>
    ```
 2. Create `SKILL.md` using the template above
 3. Optionally add `references/`, `templates/`, `themes/` subdirectories for supporting content

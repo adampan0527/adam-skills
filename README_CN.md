@@ -17,7 +17,7 @@
 **Step 2 — 安装插件：**
 
 ```
-/plugin install adam-skills@adam-skills
+/plugin install edu@adam-skills
 ```
 
 **Step 3 — 重启 Claude Code 使插件生效。**
@@ -28,13 +28,13 @@
 
 ```bash
 # 更新到最新版本
-/plugin update adam-skills@adam-skills
+/plugin update edu@adam-skills
 
 # 查看已安装插件
 /plugin list
 
 # 查看插件详情
-/plugin details adam-skills@adam-skills
+/plugin details edu@adam-skills
 ```
 
 ---
@@ -77,7 +77,7 @@
 ### 1. 创建 skill 目录
 
 ```bash
-mkdir -p plugins/adam-skills/skills/<skill-name>
+mkdir -p plugins/edu/skills/<skill-name>
 ```
 
 ### 2. 编写 SKILL.md

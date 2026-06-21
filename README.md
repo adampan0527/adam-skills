@@ -17,7 +17,7 @@ In Claude Code, run:
 **Step 2 — Install the plugin:**
 
 ```
-/plugin install adam-skills@adam-skills
+/plugin install edu@adam-skills
 ```
 
 **Step 3 — Restart Claude Code to load the new plugin.**
@@ -28,13 +28,13 @@ Once installed, all skills are registered as slash commands. Type `/<skill-name>
 
 ```bash
 # Update to the latest version
-/plugin update adam-skills@adam-skills
+/plugin update edu@adam-skills
 
 # List installed plugins
 /plugin list
 
 # View plugin details
-/plugin details adam-skills@adam-skills
+/plugin details edu@adam-skills
 ```
 
 ---
@@ -77,7 +77,7 @@ If you want to fork this repo to create your own skills:
 ### 1. Create the skill directory
 
 ```bash
-mkdir -p plugins/adam-skills/skills/<skill-name>
+mkdir -p plugins/edu/skills/<skill-name>
 ```
 
 ### 2. Write SKILL.md

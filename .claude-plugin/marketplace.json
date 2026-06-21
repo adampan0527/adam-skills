@@ -8,10 +8,10 @@
   },
   "plugins": [
     {
-      "name": "adam-skills",
+      "name": "edu",
       "description": "Adam's personal skill collection including animation adapters, video composition, CLI tools, and search utilities.",
       "version": "1.0.0",
-      "source": "./plugins/adam-skills",
+      "source": "./plugins/edu",
       "category": "development"
     }
   ]
