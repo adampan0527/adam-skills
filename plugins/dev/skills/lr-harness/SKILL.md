@@ -87,7 +87,7 @@ agent entry point — just add a row below.
 
 | You are about to... | Read this document |
 |---------------------|--------------------|
-| Understand the harness workflow or how to use any harness file | [`HARNESS.md`](./HARNESS.md) |
+| Work on features incrementally (Initializer or Coding Agent session) | [`HARNESS.md`](./HARNESS.md) |
 | Write or modify source code | [`CODE_STYLE.md`](./CODE_STYLE.md) |
 
 Add more rows here as the project grows — e.g. testing, deployment, security.
@@ -107,8 +107,6 @@ When you remove a rule document:
 3. Update any cross-references in the remaining documents.
 ```
 
----
-
 ### File 2: `CLAUDE.md`
 
 ```markdown
@@ -123,14 +121,12 @@ Do not duplicate rule content here — `_AGENT.md` and the documents it indexes
 are the single source of truth.
 ```
 
----
-
 ### File 3: `AGENT.md`
 
 ```markdown
 # AGENT.md
 
-If you are an AI agent entering this project and you are NOT Claude Code, **read [`_AGENT.md`](./_AGENT.md) first**.
+If you are an AI agent entering this project, **read [`_AGENT.md`](./_AGENT.md) first**.
 
 `_AGENT.md` is the document index. It tells you which other documents in this
 project apply to your current task (harness workflow, code style, etc.).
@@ -138,8 +134,6 @@ project apply to your current task (harness workflow, code style, etc.).
 Do not duplicate rule content here — `_AGENT.md` and the documents it indexes
 are the single source of truth.
 ```
-
----
 
 ### File 4: `HARNESS.md`
 
@@ -638,8 +632,6 @@ to push too far and potentially break something. The next session can pick
 up where you left off by reading `claude-progress.txt` and `feature_list.json`.
 ```
 
----
-
 ### File 5: `CODE_STYLE.md`
 
 ```markdown
@@ -830,8 +822,6 @@ or modifying source code. Part 1 never changes; Part 2 changes with the
 project. See [`_AGENT.md`](./_AGENT.md).
 ```
 
----
-
 ### File 6: `INITIALIZER_PROMPT.md`
 
 ```markdown
@@ -965,8 +955,6 @@ Next Steps:
 
 Once you have completed all these tasks, you are done. Do NOT proceed to implement features - that is the job of the coding agent in subsequent sessions.
 ```
-
----
 
 ### File 7: `CODING_AGENT_PROMPT.md`
 
@@ -1158,8 +1146,6 @@ You should stop when:
 Even if you have context remaining, it's better to leave the environment clean for the next session than to push too far and potentially break something.
 ```
 
----
-
 ### File 8: `init.sh`
 
 ```bash
@@ -1230,8 +1216,6 @@ echo "Press Ctrl+C to stop the server"
 wait $SERVER_PID
 ```
 
----
-
 ### File 9: `feature_list.json`
 
 A fragile data file. **Never edit it directly** — all mutations go through
@@ -1265,13 +1249,11 @@ is forbidden by CODE_STYLE.md Hard Rules.
 }
 ```
 
----
-
-### File 10: `tools/feature_list.py`
-
 The mandatory interface to `feature_list.json`. Create the `tools/` directory
 if it does not exist, then write this Python script into it. The script
 ships as-is from the harness — do not modify it during scaffold.
+
+### File 10: `tools/feature_list.py`
 
 ```python
 #!/usr/bin/env python3
