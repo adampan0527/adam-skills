@@ -55,7 +55,9 @@ bash scripts/check.sh
 | `version-parity` | marketplace 条目 version == 清单 version |
 | `skill-frontmatter-open` / `-name` / `-description` | 每个 SKILL.md 以 `---` 开头且含 name、description |
 
-提交前跑一次；改动 manifest / marketplace / SKILL.md 后必跑。本仓库暂无 GitHub Actions 自动执行。
+提交前跑一次；改动 manifest / marketplace / SKILL.md 后必跑。
+
+GitHub Actions（`.github/workflows/check.yml`）在 push 到 `main`、任意 PR 以及手动触发时都会自动跑同一条命令，所以本地漏跑不会漏到远端。
 
 
 ## 提交约定

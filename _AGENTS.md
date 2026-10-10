@@ -18,8 +18,8 @@
 | 包管理器 / 构建命令 | 无（仓库根目录无 `package.json`，不需构建） |
 | 测试命令 | 无自动化测试；校验跑 `bash scripts/check.sh`，skill 靠 harness 内触发人工验证 |
 | 代码规范来源 | 人工约定，见 [docs/conventions.md](docs/conventions.md) |
-| 当前对外发布 | 市场 `adam-skills` v1.0.0；插件 `agent-docs` v1.0.0、`edu` v1.0.0 |
-| 文档目录 | `docs/` |
+| 当前对外发布 | 市场 `adam-skills` v1.0.0；插件 `agent-docs` v1.1.0、`edu` v1.1.0 |
+| 文档目录 | `docs/`（按需创建，当前仅 2 份已填实） |
 
 **填写规则**：每一行都只写「查得到的事实」，一行不超过 30 字；写不出来就保持 `待填写`，不要编造。
 
@@ -35,7 +35,8 @@
 
 所有被引用的文档都放在项目根目录的 `docs/` 文件夹里。
 
-`docs/` 下还有 `development-workflow.md` / `testing.md` / `domain-model.md` / `operations.md` / `troubleshooting.md` 五份文件，目前**全是 `待填写` 占位**（由 `agent-docs` 插件的脚手架生成）。占位期间**故意不进上表**——索引指向空文档只会让 agent 白读一轮。等某份文档写了真实内容，再回来加对应行。
+`docs/` 下的文档**按需创建，不预先占位**：只有真的写下了可复用的内容才建文件，并同时在上表加一行。
+（旧版脚手架曾预生成 5 份全是 `待填写` 的空文档，现已删除——索引指向空文档只会让 agent 白读一轮。）
 
 ## 3. 渐进式披露原则（Progressive Disclosure）
 

@@ -28,7 +28,8 @@ adam-skills/
 │               └── themes/             # 主题 token（JSON + CSS）
 ├── scripts/
 │   └── check.sh                 # 纯 bash 校验脚本（manifest / SKILL.md 规则）
-├── docs/                        # 索引只指向填实了的文档，其余为占位
+├── .github/workflows/check.yml  # CI：push / PR 自动跑 scripts/check.sh
+├── docs/                        # 索引只指向填实了的文档；其余按需创建，不占位
 ├── _AGENTS.md                   # 唯一 Agent 提示词内容源
 ├── AGENTS.md / CLAUDE.md        # 纯指针
 └── README.md / README_CN.md / LICENSE

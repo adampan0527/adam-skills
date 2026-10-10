@@ -1,18 +1,30 @@
 #!/usr/bin/env bash
 # ensure_agent_docs.sh
 #
-# Codex SessionStart hook.
-# If the project root has no _AGENTS.md, scaffold:
+# SessionStart hook for Claude Code and Codex.
+#
+# If the project root has no _AGENTS.md AND the root looks like a real
+# project, scaffold the minimal progressive-disclosure entry point:
 #   <root>/_AGENTS.md    <- single source of truth (entry prompt, filled progressively)
 #   <root>/AGENTS.md     <- pointer to _AGENTS.md
-#   <root>/CLAUDE.md    <- pointer to _AGENTS.md
-#   <root>/docs/*.md    <- the documents referenced by the table inside _AGENTS.md
-# The hook is idempotent: it only acts when _AGENTS.md is missing.
+#   <root>/CLAUDE.md     <- pointer to _AGENTS.md
+#
+# It deliberately does NOT pre-create docs/*.md. The _AGENTS.md it writes
+# explains that docs are created on demand, because a stub document that
+# every session's index table points at is pure wasted context.
+#
+# Safety guards, in order:
+#   - AGENT_DOCS_DISABLE=1 in the environment   -> do nothing, everywhere
+#   - <root>/.agent-docs-disable exists          -> do nothing, that project
+#   - root is a system dir or $HOME              -> do nothing
+#   - root has no project marker                 -> do nothing
+# The hook is idempotent: once _AGENTS.md exists it exits silently.
 #
 # Env:
-#   CODEX_PROJECT_ROOT  - fallback root when the hook payload carries no cwd
-#   AGENT_DOCS_DISABLE  - set to 1 to opt out entirely
-# Requires: bash 3.2+ and POSIX userland (mktemp/sed/pwd). No node, jq or python.
+#   CODEX_PROJECT_ROOT / CLAUDE_PROJECT_DIR - fallback root when the hook
+#                                            payload carries no cwd
+#   AGENT_DOCS_DISABLE                      - set to 1 to opt out entirely
+# Requires: bash 3.2+ and POSIX userland (mktemp/sed/pwd/ls). No node, jq, python.
 
 set -uo pipefail
 
@@ -24,7 +36,7 @@ payload="$(cat 2>/dev/null || true)"
 cwd="$(printf '%s' "$payload" | sed -n 's/.*"cwd"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')"
 
 # Fallbacks: payload without cwd -> env var -> process cwd.
-root="${cwd:-${CODEX_PROJECT_ROOT:-}}"
+root="${cwd:-${CODEX_PROJECT_ROOT:-${CLAUDE_PROJECT_DIR:-}}}"
 [ -n "$root" ] || root="$(pwd)"
 root="$(cd "$root" 2>/dev/null && pwd -P)" || exit 0
 [ -d "$root" ] || exit 0
@@ -41,8 +53,29 @@ case "$root" in
 esac
 [ "$root" = "$(cd "$HOME" && pwd -P)" ] && exit 0
 
-DOCS_DIR="$root/docs"
-mkdir -p "$DOCS_DIR" || exit 0
+# Per-project opt out: an empty file the user can drop in to silence us for
+# good without touching their shell profile.
+[ -e "$root/.agent-docs-disable" ] && exit 0
+
+# --------------------------------------------- is this actually a project? ---
+# Scaffolding a random scratch directory (or a folder the user just cd'd into
+# while exploring) is noise, not help. Require a project marker.
+looks_like_project() {
+  local marker
+  for marker in .git .hg .svn \
+               package.json pyproject.toml setup.py requirements.txt \
+               go.mod Cargo.toml pom.xml build.gradle build.gradle.kts \
+               composer.json Gemfile Makefile CMakeLists.txt \
+               .project
+  do
+    [ -e "$root/$marker" ] && return 0
+  done
+  # Already has an agent entry point under another name -> clearly a project
+  # that was set up by hand; the pointer files below would only be redundant,
+  # but the index is still worth having, so treat it as a project.
+  [ -e "$root/AGENTS.md" ] || [ -e "$root/CLAUDE.md" ] || [ -d "$root/docs" ]
+}
+looks_like_project || exit 0
 
 created_any=0
 
@@ -102,7 +135,7 @@ write_if_absent "$AGENT_MD" <<'MDEOF'
 | 包管理器 / 构建命令 | <待填写> |
 | 测试命令 | <待填写> |
 | 代码规范来源 | <待填写：如 eslint / ruff / clippy / 自定义脚本> |
-| 文档目录 | `docs/` |
+| 文档目录 | `docs/`（**按需创建**，见第 2 节） |
 
 **填写规则**：每一行都只写「查得到的事实」，一行不超过 30 字；写不出来就保持 `待填写`，不要编造。
 
@@ -112,16 +145,13 @@ write_if_absent "$AGENT_MD" <<'MDEOF'
 
 | 遇见的情况 | 应该看哪个文档 |
 | --- | --- |
-| 第一次进入项目，想知道整体结构、模块划分与依赖关系 | [docs/architecture.md](docs/architecture.md) |
-| 要写代码或提 PR，想知道命名/风格/目录约定 | [docs/conventions.md](docs/conventions.md) |
-| 需要构建、运行、测试、打包、发布 | [docs/development-workflow.md](docs/development-workflow.md) |
-| 要补测试或关心测试覆盖率与质量门禁 | [docs/testing.md](docs/testing.md) |
-| 碰到业务概念、领域模型、名词看不懂 | [docs/domain-model.md](docs/domain-model.md) |
-| 涉及配置项、环境变量、密钥、部署与运维 | [docs/operations.md](docs/operations.md) |
-| 遇到报错、疑难排查、历史踩坑 | [docs/troubleshooting.md](docs/troubleshooting.md) |
+| 第一次进入项目，想知道整体结构、模块划分与依赖关系 | <按需创建：docs/architecture.md> |
+| 要写代码或提 PR，想知道命名/风格/目录约定 | <按需创建：docs/conventions.md> |
 | 上表都没覆盖的新情况 | 先回到本文件新增一行「情况 → 文档」，再补写那份文档 |
 
-所有被引用的文档都放在项目根目录的 `docs/` 文件夹里（本文件已自动创建该目录）。
+`docs/` 下的文档**按需创建，不预先占位**：只有当你真的写下了值得复用的内容，
+才 `mkdir -p docs` 建对应文件，并**同时**在上表加一行指向它。
+反之，一份全是 `待填写` 的空文档被索引后，每次会话都会白白读它一遍。
 
 ## 3. 渐进式披露原则（Progressive Disclosure）
 
@@ -138,137 +168,27 @@ write_if_absent "$AGENT_MD" <<'MDEOF'
 
 ## 4. 硬性红线
 
-<!-- 待填写：写下「不做就一定出事」的规则，例如：禁止直接改生产配置、禁止绕过测试提交、禁止删除未跟踪文件。暂时没有就留空。 -->
+MDEOF
 
-（暂无）
+# Red lines that hold for every project regardless of stack.
+cat >> "$AGENT_MD" <<'MDEOF'
+- **禁止**编造基础说明里的事实：查不到就写 `待填写`。
+- **禁止**往 `AGENTS.md` / `CLAUDE.md` 写正文——它们只能是指针。
 
 ## 5. 维护本文件
 
 - 修改本项目约定时，**改 `docs/` 下的正文**，本文件只维护索引。
 - 新增文档 = 在 `docs/` 建文件 + 在第 2 节表格加一行，两件事必须同时做完。
 - `AGENTS.md` 与 `CLAUDE.md` 只是指针，**永远不要往里面写正文**。
+
+## 6. 不想让本插件再动这个项目
+
+在本项目根目录建一个空文件 `.agent-docs-disable` 即可。
 MDEOF
-
-# --------------------------------------------------------- docs/ skeletons ---
-write_if_absent "$DOCS_DIR/architecture.md" <<'EOF'
-# 架构与模块划分
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-## 30 秒速览
-- 一句话：<待填写>
-- 入口：<待填写>
-
-## 目录 / 模块地图
-| 路径 | 职责 | 关键入口 |
-| --- | --- | --- |
-| <待填写> | <待填写> | <待填写> |
-
-## 依赖关系
-- 内部依赖方向：<待填写>
-- 外部依赖：<待填写>
-
-## 边界与约束
-- <待填写：这个模块不能做什么>
-EOF
-
-write_if_absent "$DOCS_DIR/conventions.md" <<'EOF'
-# 代码规范与目录约定
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-## 硬性规则
-- <待填写：命名、目录分层、禁止事项>
-
-## 由工具强制的部分（不要手写，指向命令即可）
-| 检查 | 命令 | 失败时 |
-| --- | --- | --- |
-| <待填写> | <待填写> | <待填写> |
-
-## 提交约定
-- 分支 / commit 风格：<待填写>
-EOF
-
-write_if_absent "$DOCS_DIR/development-workflow.md" <<'EOF'
-# 开发流程：构建 / 运行 / 测试 / 发布
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-| 动作 | 命令 | 前置条件 |
-| --- | --- | --- |
-| 安装依赖 | <待填写> | <待填写> |
-| 本地启动 | <待填写> | <待填写> |
-| 构建 | <待填写> | <待填写> |
-| 快速自检 | <待填写> | <待填写> |
-| 发布 | <待填写> | <待填写> |
-
-## 本地环境要求
-- 运行时 / 版本：<待填写>
-- 需要的服务：<待填写>
-EOF
-
-write_if_absent "$DOCS_DIR/testing.md" <<'EOF'
-# 测试策略与质量门禁
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-- 测试放在哪里：<待填写>
-- 怎么跑：<待填写>
-- 覆盖率要求：<待填写>
-- 什么改动必须补测试：<待填写>
-- 允许被跳过的场景：<待填写>
-EOF
-
-write_if_absent "$DOCS_DIR/domain-model.md" <<'EOF'
-# 领域模型与术语表
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-| 术语 | 含义 | 代码里的名字 |
-| --- | --- | --- |
-| <待填写> | <待填写> | <待填写> |
-
-## 核心概念关系
-- <待填写>
-EOF
-
-write_if_absent "$DOCS_DIR/operations.md" <<'EOF'
-# 配置、部署与运维
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-## 环境变量
-| 变量 | 作用 | 是否必需 | 默认值 |
-| --- | --- | --- | --- |
-| <待填写> | <待填写> | <待填写> | <待填写> |
-
-## 部署
-- 环境：<待填写>
-- 发布步骤：<待填写>
-- 回滚：<待填写>
-
-## 密钥与凭据
-- <待填写：只写「去哪里取、怎么注入」，绝不写真实值>
-EOF
-
-write_if_absent "$DOCS_DIR/troubleshooting.md" <<'EOF'
-# 疑难排查与历史踩坑
-
-> 状态：**待填充**（由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 生成的占位文档）
-
-## 常见问题
-### <症状>
-- 原因：<待填写>
-- 排查：<待填写>
-- 修复：<待填写>
-
-## 历史教训
-- <待填写：踩过一次的坑就记在这里，避免重复踩>
-EOF
 
 [ "$created_any" -eq 0 ] && exit 0
 
 # Tell the agent the scaffold exists and how to maintain it.
 cat <<EOF
-{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${root} 之前没有 ${POINTER_TARGET}，已自动生成 ${POINTER_TARGET} / AGENTS.md / CLAUDE.md 以及 docs/ 下的 7 份占位文档。当前项目**还没有真正的入口提示词**：请在本次工作中按 ${POINTER_TARGET} 中的「渐进式披露原则」把基础说明填成真实内容，把确实复用得到的知识写进 docs/ 并在索引表格里加行，不要一次性倾倒全部上下文，也不要往 AGENTS.md / CLAUDE.md 写正文。"}}
+{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${root} 之前没有 ${POINTER_TARGET}，已自动生成 ${POINTER_TARGET} / AGENTS.md / CLAUDE.md 三个文件。当前项目**还没有真正的入口提示词**：请在本次工作中按 ${POINTER_TARGET} 中的「渐进式披露原则」把基础说明填成真实内容。docs/ 下的文档**按需创建**——不要预先铺一堆待填写占位文件，只有真的写下了可复用的内容才建文件并加索引行。不想要这套脚手架的话，在根目录建一个空的 .agent-docs-disable 即可。"}}
 EOF

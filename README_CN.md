@@ -75,6 +75,15 @@ codex plugin marketplace upgrade
 |-------|------|------|
 | Edu Web PowerPoint | `/edu-web-powerpoint` | 给定教案 PDF/Word 或知识点大纲，生成教学用 16:9 网页演示（web-ppt），含实操案例 |
 
+### 其他插件
+
+| 插件 | 说明 |
+|------|------|
+| `agent-docs` | 会话启动时，为缺少入口文档的项目自动生成渐进式披露骨架（`_AGENTS.md` + 两个指针文件）。详见它自己的 [README](plugins/agent-docs/README.md)。 |
+
+与 `edu` 一起安装：Claude Code 用 `/plugin install agent-docs@adam-skills`，
+Codex 用 `codex plugin add agent-docs@adam-skills`。
+
 ---
 
 ## Skill 详细介绍

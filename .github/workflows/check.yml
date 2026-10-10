@@ -1,0 +1,23 @@
+name: check
+
+# The repo has no build step and no test runner. This workflow only runs the
+# one thing that matters: scripts/check.sh, which enforces the manifest and
+# SKILL.md red lines declared in _AGENTS.md.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run repo checks
+        run: bash scripts/check.sh

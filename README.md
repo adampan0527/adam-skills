@@ -75,6 +75,15 @@ codex plugin marketplace upgrade
 |-------|---------|-------------|
 | Edu Web PowerPoint | `/edu-web-powerpoint` | From a lesson PDF/Word or an outline of key points, generate a click-driven 16:9 web presentation (web-ppt) with hands-on exercises |
 
+### Other plugins
+
+| Plugin | Description |
+|--------|-------------|
+| `agent-docs` | On `SessionStart`, scaffolds a progressive-disclosure doc entry point (`_AGENTS.md` + two pointers) in any project that lacks one. See its own [README](plugins/agent-docs/README.md). |
+
+Install it alongside `edu` with `/plugin install agent-docs@adam-skills` (Claude Code)
+or `codex plugin add agent-docs@adam-skills` (Codex).
+
 ---
 
 ## Skill Details

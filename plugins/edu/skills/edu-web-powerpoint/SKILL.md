@@ -1,6 +1,6 @@
 ---
 name: edu-web-powerpoint
-description: 给定教案 PDF / Word 文档 或 知识点 + 大纲，生成教学用点击驱动 16:9 网页演示（web-ppt）。流程：文档 → markitdown 预处理 → knowledge.md → 一次产出教学 script + outline 开发计划 → 用户一次对齐 5 件事（内容 / outline / 主题 / 案例选择 / 开发模式）→ 网页开发（逐章 / 顺序 / 并行）→ 实操案例文件夹发放。大纲中的案例分为两类：嵌入 web-ppt 的演示案例 + 独立文件夹的实操练习。若大纲无案例，ewp 自动生成。本 Skill 沉淀的是教学演示的设计方法论 + 协作流程，不绑定特定样式 / 字体 / 颜色。
+description: 把教案 PDF / Word 文档或知识点大纲，转成教学用的点击驱动 16:9 网页演示（web-ppt），并生成配套实操案例。适用于课堂课件、培训材料、技术分享等需要配套练习的教学场景。
 ---
 
 # Edu Web PowerPoint (ewp)
