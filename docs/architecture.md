@@ -57,6 +57,8 @@ adam-skills/
 - 内部依赖方向：市场目录 → 两份插件清单 → skills，单向下游，插件之间不互相引用。
 - 两个 harness 的关系：Claude Code 只读 `.claude-plugin/*`；Codex 按 `.codex-plugin` → `.claude-plugin` → `.cursor-plugin` 的顺序取**第一份存在的**清单。市场目录两边共用 `.claude-plugin/marketplace.json` 一份。
 - 外部依赖：除 Claude Code / Codex 插件系统外无运行时依赖；仓库根目录无 `package.json`。
+- 平台：macOS / Linux / Windows 通用。Windows 需 Git Bash（两个 harness 本身已依赖）；hook 会把
+  harness 传来的 `C:\...` 路径归一化为 MSYS 形式再使用。
 
 ## 边界与约束
 - 本仓库只存放「可分发的插件/skill 资产」，不放构建产物、依赖目录。

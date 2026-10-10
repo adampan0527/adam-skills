@@ -83,4 +83,30 @@ touch .agent-docs-disable
 
 ## Requirements
 
-bash 3.2+ and standard POSIX userland (`mktemp`, `sed`, `pwd`). No node, jq, or python.
+bash 3.2+ and standard POSIX userland (`mktemp`, `sed`, `cut`, `tr`, `pwd`). No node, jq, or python.
+
+## Windows
+
+Supported, with one prerequisite: **Git for Windows (Git Bash) must be installed and `bash` must be
+on `PATH`** — the hook command is `bash "${PLUGIN_ROOT}/hooks/ensure_agent_docs.sh"`, and the script
+relies on a POSIX userland. This is the same requirement Claude Code and Codex already have on
+Windows, so if your harness runs at all, this works.
+
+What the script handles for you:
+
+- Harnesses on Windows report a native `cwd` (`C:\Users\me\project` or `C:/Users/me/project`).
+  The script converts it to the MSYS form (`/c/Users/me/project`) before `cd`, and falls back to the
+  original spelling if that fails.
+- `C:\Windows`, `C:\Program Files`, and `C:\ProgramData` are excluded alongside the macOS
+  system paths, so it never scaffolds into them.
+- An unset `HOME` is tolerated rather than making every directory look like `$HOME`.
+
+Not supported: a pure `cmd.exe` / PowerShell environment with no bash. If `bash` is missing the
+hook fails silently and no files are written — nothing is corrupted, the scaffold just never appears.
+To use the plugin there, run it manually from Git Bash:
+
+```bash
+bash /path/to/plugins/agent-docs/hooks/ensure_agent_docs.sh
+```
+
+The repo's own `scripts/check.sh` has the same requirement — run it from Git Bash on Windows.

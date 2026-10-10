@@ -73,6 +73,16 @@ bash scripts/check.sh
 GitHub Actions（`.github/workflows/check.yml`）在 push 到 `main`、任意 PR 以及手动触发时都会自动跑同一条命令，所以本地漏跑不会漏到远端。
 
 
+## 跨平台
+
+仓库里的两处 bash 都要在 Windows 上可用，因此：
+
+- `scripts/check.sh` 与 `plugins/agent-docs/hooks/ensure_agent_docs.sh` 都只依赖 bash 3.2+ 和
+  POSIX userland（`mktemp` / `sed` / `cut` / `tr` / `awk` / `grep` / `find`），**不用 node / jq / python**。
+- Windows 上需要 Git Bash（Claude Code 和 Codex 本身已经依赖它）。hook 会把 harness 传来的
+  `C:\Users\...` 归一化成 `/c/Users/...` 再 `cd`。
+- CI 固定在 ubuntu 跑 `check.sh`；本机 Windows 请用 Git Bash 手动跑同一条命令。
+
 ## 提交约定
 - 分支 / commit 风格：Conventional Commits（`feat:`、`fix:`、`docs:`、`refactor:`、`chore:`）。
 - 新增文档 = 在 `docs/` 建文件 + 在 `_AGENTS.md` 第 2 节表格加一行，两件事必须同时做完。

@@ -24,7 +24,9 @@
 #   CODEX_PROJECT_ROOT / CLAUDE_PROJECT_DIR - fallback root when the hook
 #                                            payload carries no cwd
 #   AGENT_DOCS_DISABLE                      - set to 1 to opt out entirely
-# Requires: bash 3.2+ and POSIX userland (mktemp/sed/pwd/ls). No node, jq, python.
+# Requires: bash 3.2+ and POSIX userland (mktemp/sed/cut/tr/ls/pwd). No node, jq, python.
+# On Windows this needs Git Bash (or MSYS2) on PATH; Windows-native
+# paths from the harness payload are converted before use.
 
 set -uo pipefail
 
@@ -38,8 +40,35 @@ cwd="$(printf '%s' "$payload" | sed -n 's/.*"cwd"[[:space:]]*:[[:space:]]*"\([^"
 # Fallbacks: payload without cwd -> env var -> process cwd.
 root="${cwd:-${CODEX_PROJECT_ROOT:-${CLAUDE_PROJECT_DIR:-}}}"
 [ -n "$root" ] || root="$(pwd)"
-root="$(cd "$root" 2>/dev/null && pwd -P)" || exit 0
+
+# On Windows the harness reports a native path ("C:\Users\me\project" or
+# "C:/Users/me/project"). Under Git Bash / MSYS, cd needs "/c/Users/me/project"
+# instead. Normalise, then try both spellings so this works under any shell
+# that can see the directory at all.
+to_shell_path() {
+  case "$1" in
+    [A-Za-z]:[\\/]*)
+      printf '/%s%s\n' \
+        "$(printf '%s' "$1" | cut -c1 | tr '[:upper:]' '[:lower:]')" \
+        "$(printf '%s' "$1" | cut -c3- | tr '\\' '/')"
+      ;;
+    *)
+      printf '%s\n' "$1" | tr '\\' '/'
+      ;;
+  esac
+}
+
+resolved=""
+for candidate in "$(to_shell_path "$root")" "$root"; do
+  resolved="$(cd "$candidate" 2>/dev/null && pwd -P)" || resolved=""
+  [ -n "$resolved" ] && break
+done
+[ -n "$resolved" ] || exit 0
+root="$resolved"
 [ -d "$root" ] || exit 0
+
+# Keep the harness-reported spelling for the message humans read.
+display_root="${cwd:-$root}"
 
 AGENT_MD="$root/_AGENTS.md"
 POINTER_TARGET="_AGENTS.md"
@@ -50,8 +79,16 @@ POINTER_TARGET="_AGENTS.md"
 # Never scaffold inside these directories.
 case "$root" in
   /System|/System/*|/Library|/Library/*|/private/var|/private/etc|/dev|/Applications) exit 0 ;;
+  /c/Windows|/c/Windows/*|/c/Program\ Files|/c/Program\ Files/*|/c/ProgramData) exit 0 ;;
 esac
-[ "$root" = "$(cd "$HOME" && pwd -P)" ] && exit 0
+
+# Never scaffold into the user's home directory. Guard on HOME being set:
+# `cd ""` succeeds and stays put, so an unset HOME would otherwise make every
+# project look like $HOME and silently disable the hook everywhere.
+if [ -n "${HOME:-}" ]; then
+  home="$(cd "$HOME" 2>/dev/null && pwd -P)" || home=""
+  [ -n "$home" ] && [ "$root" = "$home" ] && exit 0
+fi
 
 # Per-project opt out: an empty file the user can drop in to silence us for
 # good without touching their shell profile.
@@ -190,5 +227,5 @@ MDEOF
 
 # Tell the agent the scaffold exists and how to maintain it.
 cat <<EOF
-{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${root} 之前没有 ${POINTER_TARGET}，已自动生成 ${POINTER_TARGET} / AGENTS.md / CLAUDE.md 三个文件。当前项目**还没有真正的入口提示词**：请在本次工作中按 ${POINTER_TARGET} 中的「渐进式披露原则」把基础说明填成真实内容。docs/ 下的文档**按需创建**——不要预先铺一堆待填写占位文件，只有真的写下了可复用的内容才建文件并加索引行。不想要这套脚手架的话，在根目录建一个空的 .agent-docs-disable 即可。"}}
+{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${display_root} 之前没有 ${POINTER_TARGET}，已自动生成 ${POINTER_TARGET} / AGENTS.md / CLAUDE.md 三个文件。当前项目**还没有真正的入口提示词**：请在本次工作中按 ${POINTER_TARGET} 中的「渐进式披露原则」把基础说明填成真实内容。docs/ 下的文档**按需创建**——不要预先铺一堆待填写占位文件，只有真的写下了可复用的内容才建文件并加索引行。不想要这套脚手架的话，在根目录建一个空的 .agent-docs-disable 即可。"}}
 EOF
