@@ -32,10 +32,19 @@ of them trips:
 | Root is `$HOME` or a system directory | Never touches system paths |
 | Root has no project marker | Skips scratch dirs and random folders |
 
-A "project marker" is any of `.git`, `package.json`, `pyproject.toml`,
-`requirements.txt`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`,
-`composer.json`, `Gemfile`, `Makefile`, `CMakeLists.txt`, `.hg`, `.svn`, `.project`,
-or an existing `AGENTS.md` / `CLAUDE.md` / `docs/`.
+A "project marker" is any of `.git`, `.hg`, `.svn`, `package.json`, `pyproject.toml`,
+`setup.py`, `requirements.txt`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`,
+`build.gradle.kts`, `composer.json`, `Gemfile`, `Makefile`, `CMakeLists.txt`, `.project`,
+or an existing `AGENTS.md` / `CLAUDE.md`.
+
+A bare `docs/` directory is deliberately **not** a marker. Plenty of non-project folders keep
+notes in `docs/`, and scaffolding those would be a false positive.
+
+### "I opened Codex without picking a project"
+
+The hook skips. With no project selected there is no project marker to find, and the
+non-project roots it might land in — `$HOME`, `/`, `~/Desktop`, a downloads folder — are all
+rejected. It only writes when it is looking at something that is actually a codebase.
 
 It then injects a `[project-init]` note into the session telling the agent to fill the scaffold
 with real project knowledge — instead of dumping the whole repository into context.

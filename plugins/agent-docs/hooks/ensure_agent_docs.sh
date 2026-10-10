@@ -107,10 +107,11 @@ looks_like_project() {
   do
     [ -e "$root/$marker" ] && return 0
   done
-  # Already has an agent entry point under another name -> clearly a project
-  # that was set up by hand; the pointer files below would only be redundant,
-  # but the index is still worth having, so treat it as a project.
-  [ -e "$root/AGENTS.md" ] || [ -e "$root/CLAUDE.md" ] || [ -d "$root/docs" ]
+  # Already carries an agent entry point under another name -> hand-managed
+  # project, and an index is still worth having. Note: a bare docs/ directory
+  # is deliberately NOT a signal. Plenty of non-project folders keep notes in
+  # docs/, and scaffolding them would be a false positive.
+  [ -e "$root/AGENTS.md" ] || [ -e "$root/CLAUDE.md" ]
 }
 looks_like_project || exit 0
 
