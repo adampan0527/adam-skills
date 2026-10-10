@@ -17,7 +17,7 @@ adam-skills/
 │   │   ├── .codex-plugin/plugin.json    # Codex 清单（含 interface）
 │   │   ├── hooks/               # SessionStart 钩子
 │   │   └── LICENSE, README.md
-│   └── edu/                     # 技能集合
+│   └── edu/                     # 教育领域插件（教学相关 skill 都放这里）
 │       ├── .claude-plugin/plugin.json   # 插件清单（必需，不带 $schema）
 │       ├── .codex-plugin/plugin.json    # Codex 清单（必需）
 │       └── skills/
@@ -35,6 +35,15 @@ adam-skills/
 └── README.md / README_CN.md / LICENSE
 ```
 
+### 插件按领域划分
+
+一个插件对应一个领域，插件名即领域名；领域不符就另开插件，不做杂项集合。
+
+| 插件 | 领域 | 装什么 |
+| --- | --- | --- |
+| `edu` | 教育 / 教学 | 所有教学相关 skill（当前：`edu-web-powerpoint`） |
+| `agent-docs` | Agent 工程化 | 项目文档脚手架（含 SessionStart hook） |
+
 | 路径 | 职责 | 关键入口 |
 | --- | --- | --- |
 | `.claude-plugin/marketplace.json` | 市场目录，列出所有插件及其 `source`；Codex 也直接读这一份 | 市场目录 |
@@ -51,4 +60,5 @@ adam-skills/
 
 ## 边界与约束
 - 本仓库只存放「可分发的插件/skill 资产」，不放构建产物、依赖目录。
+- **已发布的插件名视为对外 API**：`edu@adam-skills` 这类安装串已经进了别人的文档与脚本，改名等于破坏它们。确需改名时先在 marketplace 保留旧条目过渡一个版本。
 - `edu-web-powerpoint` 的 `templates/` 与 `themes/` 是**要复制给终端用户的脚手架**，不是本仓库自己的代码，不应在本仓库内构建或改动其依赖。

@@ -15,11 +15,24 @@
 
 Codex 读取 manifest 的优先级是 `.codex-plugin/plugin.json` → `.claude-plugin/plugin.json` → `.cursor-plugin/plugin.json`。只写 `.claude-plugin` 也能装上，但插件商店页会缺展示信息。
 
+### 插件按领域划分
+**一个插件 = 一个领域**，插件名就是领域名，不做杂项集合。
+
+- `edu` — 教育 / 教学领域。**所有教学相关的 skill 都放这里**，包括以后新增的。
+- `agent-docs` — Agent 工程化（文档脚手架）。
+- 新领域（如视频、搜索、CLI）→ **另开一个插件**，不要塞进现有的。
+
+判断标准：新 skill 的**目标用户场景**和现有插件一致就放进去；不一致就开新插件。
+`marketplace.json` 的 `category` 用可读领域名（`Education` / `Developer Tools`），
+而 `.codex-plugin` 的 `interface.category` 保持一致。
+
 ### SKILL.md
-- 路径固定为 `plugins/edu/skills/<skill-name>/SKILL.md`。
+- 路径固定为 `plugins/<plugin>/skills/<skill-name>/SKILL.md`（`<plugin>` 是所属领域插件）。
 - 目录名小写、连字符分隔（如 `css-animations`、`smart-search`）。
 - 文件必须以 YAML frontmatter 开头，至少含 `name` 与 `description`。
-- `description` 决定 Claude Code 何时自动选中该 skill，**必须**写清触发场景。
+- `description` 决定两个 harness 何时自动选中该 skill，**必须**写清触发场景。
+- `description` 只写「做什么 + 什么时候用」，**不要**把执行流程写进去——两个 harness
+  每次会话都会注入这个字段，流程属于正文。控制在 300 字节以内。
 
 ### 目录约定
 - 避免单文件子目录；参考文档保持扁平（如 `references/CHAPTER-EXAMPLES.md`，而不是 `references/EXAMPLES/README.md`）。
@@ -65,10 +78,25 @@ GitHub Actions（`.github/workflows/check.yml`）在 push 到 `main`、任意 PR
 - 新增文档 = 在 `docs/` 建文件 + 在 `_AGENTS.md` 第 2 节表格加一行，两件事必须同时做完。
 
 ## 新增一个 skill 的步骤
-1. `mkdir -p plugins/edu/skills/<skill-name>`
-2. 按上面的模板创建 `SKILL.md`
-3. 按需添加 `references/`、`templates/`、`themes/`
-4. 确认 `description` 写清了触发条件
-5. 若新增了插件目录，补一份 `.codex-plugin/plugin.json`（字段照抄 `.claude-plugin` 那份再加 `interface`）
+1. 判断领域：和现有插件一致 → 2a；不一致 → 2b。
+2. **a. 加进已有插件**：`mkdir -p plugins/<plugin>/skills/<skill-name>`
+2. **b. 开新领域插件**：见下方「新增一个插件的步骤」。
+3. 按 SKILL.md 模板创建文件
+4. 按需添加 `references/`、`templates/`、`themes/`
+5. 确认 `description` 写清了触发条件，且不含执行流程
 6. 跑 `bash scripts/check.sh`，必须 `exit 0`
 7. 在 Claude Code 里用 `/<skill-name>` 验证（Codex 里直接点名该 skill）
+
+## 新增一个插件的步骤
+1. `mkdir -p plugins/<plugin>/.claude-plugin plugins/<plugin>/.codex-plugin plugins/<plugin>/skills`
+2. 写 `.claude-plugin/plugin.json`：`name` / `version` / `description`
+3. 写 `.codex-plugin/plugin.json`：字段照抄上面那份（**逐字一致**），再加 `interface`
+   展示块与显式 `skills` / `hooks` 路径
+4. 在 `.claude-plugin/marketplace.json` 的 `plugins` 数组里加条目：`name` / `version` /
+   `description` / `source: "./plugins/<plugin>"` / `category`
+5. 跑 `bash scripts/check.sh`，必须 `exit 0`（它会校验两份清单一致性、marketplace 条目
+   与版本对齐、以及两份清单都存在）
+
+> 已发布的插件名不要随意改：`edu@adam-skills` 之类的安装串已经写进了别人的文档和脚本，
+> 改插件名等于破坏这些安装。确需改名时，先在 marketplace 里保留一个指向新 source 的
+> 旧条目过渡一个版本。

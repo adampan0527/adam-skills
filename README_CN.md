@@ -113,10 +113,23 @@ Codex 用 `codex plugin add agent-docs@adam-skills`。
 
 如果你想 fork 这个仓库来创建自己的 skill：
 
+### 0. 先选插件 —— 插件是领域，不是集合
+
+一个插件对应**一个领域**，插件名就是领域名，不要做大杂烩。
+
+| 插件 | 领域 | 放什么 |
+|------|------|--------|
+| `edu` | 教育 / 教学 | 所有教学相关的 skill |
+| `agent-docs` | Agent 工程化 | 会话 hook、文档脚手架 |
+
+如果你的 skill 面向的用户场景和现有插件对不上，**另开一个插件**，而不是塞进不对的那个。
+新增插件 = 新目录（两份 manifest）+ `marketplace.json` 里加一条，详见
+[docs/conventions.md](docs/conventions.md)。
+
 ### 1. 创建 skill 目录
 
 ```bash
-mkdir -p plugins/edu/skills/<skill-name>
+mkdir -p plugins/<plugin>/skills/<skill-name>
 ```
 
 ### 2. 编写 SKILL.md
@@ -137,6 +150,8 @@ description: 一句话说明这个 skill 做什么、什么时候触发。
 - **一个 skill，一个领域** — 每个 skill 只解决一类问题
 - **命名规范** — 全小写，用连字符分隔，如 `css-animations`、`smart-search`
 - **description 很重要** — Claude Code 与 Codex 都根据这个字段判断何时自动选中该 skill
+- **description 是召回信号，不是说明书** — 只写「做什么 + 什么时候用」，别把执行流程塞进去
+  （两个 harness 每次会话都会注入这个字段，控制在 300 字节内，流程细节写进正文）
 - **自包含** — skill 会被独立展开到对话中，所有必要上下文都要写进去
 
 ### 4. 测试

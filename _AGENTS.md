@@ -58,7 +58,8 @@
 - **禁止**在 marketplace 里声明 `plugins/<name>/` 下不存在的插件，或两边 `version` 不一致。
 - **禁止**把 SKILL.md 放到 `plugins/<plugin>/skills/<name>/SKILL.md` 以外的位置。
 - **禁止**往 `AGENTS.md` / `CLAUDE.md` 写正文——它们只能是指针。
-- **禁止**在 `plugins/edu/skills/*/templates/` 里增删依赖或跑构建：那是复制给终端用户的脚手架，不是本仓库的代码。
+- **禁止**在 `plugins/*/skills/*/templates/` 里增删依赖或跑构建：那是复制给终端用户的脚手架，不是本仓库的代码。
+- **禁止**把一个领域的 skill 塞进领域不符的插件（插件按领域划分，见 `docs/conventions.md`）。
 - **禁止**编造基础说明里的事实：查不到就写 `待填写`。
 
 ## 5. 维护本文件
