@@ -1,0 +1,6 @@
+{
+  "name": "agent-docs",
+  "version": "1.0.0",
+  "description": "Scaffolds a progressive-disclosure agent doc entry point (_AGENTS.md + AGENTS.md + CLAUDE.md + docs/) in any project that lacks one.",
+  "hooks": "./hooks/hooks.json"
+}

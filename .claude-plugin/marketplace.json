@@ -1,12 +1,19 @@
 {
   "name": "adam-skills",
   "version": "1.0.0",
-  "description": "Adam's personal skill library for Claude Code — animation frameworks, video production, dev tools, search, and more.",
+  "description": "Adam's personal skill library for Claude Code and Codex — agent doc scaffolding, animation frameworks, video production, dev tools, search, and more.",
   "owner": {
     "name": "Yan Pan",
     "url": "https://github.com/adampan0527"
   },
   "plugins": [
+    {
+      "name": "agent-docs",
+      "description": "Scaffolds a progressive-disclosure agent doc entry point (_AGENTS.md + AGENTS.md + CLAUDE.md + docs/) in any project that lacks one.",
+      "version": "1.0.0",
+      "source": "./plugins/agent-docs",
+      "category": "development"
+    },
     {
       "name": "edu",
       "description": "Adam's personal skill collection including animation adapters, video composition, CLI tools, and search utilities.",

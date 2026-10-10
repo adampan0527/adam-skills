@@ -1,0 +1,19 @@
+{
+  "description": "Scaffold a progressive-disclosure agent doc entry point in any project that lacks one.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${PLUGIN_ROOT}/hooks/ensure_agent_docs.sh\"",
+            "timeout": 15
+          }
+        ],
+        "id": "agent-docs:ensure-entry-point",
+        "description": "Create _AGENTS.md + AGENTS.md + CLAUDE.md + docs/ when the project has no entry prompt yet."
+      }
+    ]
+  }
+}
