@@ -1,0 +1,36 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "Adam's personal development-focused skill collection.",
+  "author": {
+    "name": "Yan Pan",
+    "url": "https://github.com/adampan0527"
+  },
+  "homepage": "https://github.com/adampan0527/adam-skills",
+  "repository": "https://github.com/adampan0527/adam-skills",
+  "license": "MIT",
+  "keywords": [
+    "development",
+    "scaffolding",
+    "harness",
+    "automation"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dev",
+    "shortDescription": "Development tooling: scaffold long-running agent projects.",
+    "longDescription": "Adam's personal development-focused skill collection. Currently ships /lr-harness, which scaffolds a long-running-agent project structure with its own agent docs, coding-agent prompt, and progress tracking.",
+    "developerName": "Yan Pan",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/adampan0527/adam-skills",
+    "brandColor": "#6B46C1",
+    "defaultPrompt": [
+      "Scaffold a long-running agent project with lr-harness.",
+      "Set up the lr-harness project structure here."
+    ]
+  }
+}

@@ -23,10 +23,10 @@
     },
     {
       "name": "dev",
-      "description": "Adam's personal development-focused skill collection for Claude Code",
+      "description": "Adam's personal development-focused skill collection.",
       "version": "1.0.0",
       "source": "./plugins/dev",
-      "category": "development"
+      "category": "Developer Tools"
     }
   ]
 }

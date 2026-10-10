@@ -42,6 +42,7 @@ adam-skills/
 | 插件 | 领域 | 装什么 |
 | --- | --- | --- |
 | `edu` | 教育 / 教学 | 所有教学相关 skill（当前：`edu-web-powerpoint`） |
+| `dev` | 开发工具 | 开发工具类 skill（当前：`lr-harness`） |
 | `agent-docs` | Agent 工程化 | 项目文档脚手架（含 SessionStart hook） |
 
 | 路径 | 职责 | 关键入口 |

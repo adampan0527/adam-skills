@@ -19,6 +19,7 @@ Codex 读取 manifest 的优先级是 `.codex-plugin/plugin.json` → `.claude-p
 **一个插件 = 一个领域**，插件名就是领域名，不做杂项集合。
 
 - `edu` — 教育 / 教学领域。**所有教学相关的 skill 都放这里**，包括以后新增的。
+- `dev` — 开发工具领域（如 `lr-harness`）。
 - `agent-docs` — Agent 工程化（文档脚手架）。
 - 新领域（如视频、搜索、CLI）→ **另开一个插件**，不要塞进现有的。
 
