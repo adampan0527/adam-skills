@@ -1,74 +1,8 @@
-# CLAUDE.md
+# CLAUDE.md（入口指针）
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+本文件**不存放任何提示词正文**，只是给 Claude Code 等工具的入口指针。
 
-## Project Overview
+请阅读唯一的内容源：[_AGENTS.md](./_AGENTS.md)，并严格按其中的规则工作。
 
-This is a Claude Code plugin marketplace containing Adam's personal skill collection. The repo follows the official Claude Code plugin structure and can be installed via `/plugin marketplace add`.
-
-## Repository Structure
-
-```
-adam-skills/
-├── .claude-plugin/
-│   └── marketplace.json         # Marketplace catalog (required for /plugin)
-├── plugins/
-│   └── edu/
-│       ├── .claude-plugin/
-│       │   └── plugin.json      # Plugin manifest (required, no $schema field)
-│       └── skills/
-│           └── <skill-name>/
-│               ├── SKILL.md            # Skill definition with YAML frontmatter
-│               ├── references/         # Reference docs loaded by SKILL.md
-│               ├── templates/          # Project scaffold (HTML/TSX/CSS/config)
-│               └── themes/             # Theme tokens (JSON + CSS)
-├── CLAUDE.md
-├── LICENSE
-├── README.md
-└── README_CN.md
-```
-
-## Key Conventions
-
-### Plugin System Files
-
-- `.claude-plugin/marketplace.json` — marketplace index, lists all plugins with their `source` paths. **Do not** include `$schema`.
-- `.claude-plugin/plugin.json` — per-plugin manifest (name, version, description). **Do not** include `$schema`.
-- Skills must be placed under `plugins/<plugin>/skills/<name>/SKILL.md` to be recognized by the plugin system.
-
-### Skill Files (SKILL.md)
-
-- Each skill lives in `plugins/edu/skills/<skill-name>/SKILL.md`
-- Skill directory names are lowercase, hyphenated (e.g., `css-animations`, `smart-search`)
-- Each SKILL.md must start with YAML frontmatter containing `name` and `description`
-- The `description` field controls when Claude Code auto-selects the skill
-
-### Skill File Template
-
-```markdown
----
-name: skill-name
-description: Short description of what this skill does and when to use it.
----
-
-# Skill Name
-
-[Instructions for the skill go here.]
-```
-
-## Adding a New Skill
-
-1. Create the skill directory:
-   ```bash
-   mkdir -p plugins/edu/skills/<skill-name>
-   ```
-2. Create `SKILL.md` using the template above
-3. Optionally add `references/`, `templates/`, `themes/` subdirectories for supporting content
-4. Ensure the `description` field clearly states when the skill should be triggered
-5. Test by invoking `/<skill-name>` in Claude Code
-
-## Notes
-
-- Skills should be concise and actionable
-- Keep each skill focused on a single domain or task pattern
-- Avoid single-file subdirectories — keep reference docs flat (e.g., `references/CHAPTER-EXAMPLES.md`, not `references/EXAMPLES/README.md`)
+- 内容源：`_AGENTS.md`（根目录）
+- 详细文档：`docs/` 目录，索引见 `_AGENTS.md` 中的「什么时候看哪份文档」表格

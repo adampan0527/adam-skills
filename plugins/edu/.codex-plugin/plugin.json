@@ -1,0 +1,36 @@
+{
+  "name": "edu",
+  "version": "1.0.0",
+  "description": "Adam's personal skill collection including animation adapters, video composition, CLI tools, and search utilities.",
+  "author": {
+    "name": "Yan Pan",
+    "url": "https://github.com/adampan0527"
+  },
+  "homepage": "https://github.com/adampan0527/adam-skills",
+  "repository": "https://github.com/adampan0527/adam-skills",
+  "license": "MIT",
+  "keywords": [
+    "education",
+    "presentation",
+    "web-ppt",
+    "teaching"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Edu",
+    "shortDescription": "Teaching content skills: turn a lesson into a click-driven web presentation.",
+    "longDescription": "Adam's personal skill collection. Currently ships /edu-web-powerpoint, which turns a lesson PDF/Word document or a key-points outline into a click-driven 16:9 web presentation (web-ppt) with companion hands-on exercise folders. Skills are selected by their SKILL.md description.",
+    "developerName": "Yan Pan",
+    "category": "Education",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/adampan0527/adam-skills",
+    "brandColor": "#2F855A",
+    "defaultPrompt": [
+      "Turn this lesson PDF into a classroom web presentation.",
+      "I have key points and an outline, make a web-ppt from it."
+    ]
+  }
+}

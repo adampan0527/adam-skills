@@ -1,0 +1,37 @@
+{
+  "name": "agent-docs",
+  "version": "1.0.0",
+  "description": "Scaffolds a progressive-disclosure agent doc entry point (_AGENTS.md + AGENTS.md + CLAUDE.md + docs/) in any project that lacks one.",
+  "author": {
+    "name": "Yan Pan",
+    "url": "https://github.com/adampan0527"
+  },
+  "homepage": "https://github.com/adampan0527/adam-skills",
+  "repository": "https://github.com/adampan0527/adam-skills",
+  "license": "MIT",
+  "keywords": [
+    "agents",
+    "documentation",
+    "scaffold",
+    "progressive-disclosure",
+    "context"
+  ],
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "Agent Docs",
+    "shortDescription": "Scaffold a progressive-disclosure agent doc entry point in any project.",
+    "longDescription": "On SessionStart, checks the project root for _AGENTS.md and, when missing, creates _AGENTS.md (single source of truth), thin AGENTS.md and CLAUDE.md pointers, and the docs/ set referenced by its index table. The hook is idempotent and injects a short [project-init] note instead of dumping the repository into context. Requires bash 3.2+ and POSIX userland; set AGENT_DOCS_DISABLE=1 to opt out.",
+    "developerName": "Yan Pan",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/adampan0527/adam-skills",
+    "brandColor": "#3B7EA1",
+    "defaultPrompt": [
+      "Scaffold the agent doc entry point for this project.",
+      "Set up _AGENTS.md + AGENTS.md + docs/ here."
+    ]
+  }
+}

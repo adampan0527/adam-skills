@@ -1,14 +1,16 @@
 # Adam's Skills
 
-A personal skill library for [Claude Code](https://claude.ai/code), distributed as a plugin marketplace. Each skill is a `SKILL.md` file triggered via `/<skill-name>` in Claude Code sessions, injecting domain-specific workflows and knowledge.
+A personal skill library for [Claude Code](https://claude.ai/code) and [Codex](https://openai.com/codex/), distributed as a plugin marketplace. Each skill is a `SKILL.md` file that the harness auto-selects by its `description`, injecting domain-specific workflows and knowledge.
 
 [中文说明](README_CN.md)
 
 ## Installation
 
-**Step 1 — Add the marketplace source (one-time):**
+This marketplace works on both Claude Code and Codex. Pick your harness below.
 
-In Claude Code, run:
+### Claude Code
+
+**Step 1 — Add the marketplace source (one-time):**
 
 ```
 /plugin marketplace add adampan0527/adam-skills
@@ -24,7 +26,7 @@ In Claude Code, run:
 
 Once installed, all skills are registered as slash commands. Type `/<skill-name>` to use any skill.
 
-### Other Plugin Commands
+Other plugin commands:
 
 ```bash
 # Update to the latest version
@@ -35,6 +37,34 @@ Once installed, all skills are registered as slash commands. Type `/<skill-name>
 
 # View plugin details
 /plugin details edu@adam-skills
+```
+
+### Codex
+
+**Step 1 — Add the marketplace source (one-time):**
+
+```bash
+codex plugin marketplace add adampan0527/adam-skills
+```
+
+**Step 2 — Install the plugin:**
+
+```bash
+codex plugin add edu@adam-skills
+```
+
+**Step 3 — Restart Codex to load the new plugin.**
+
+Skills are selected automatically from their `description` — no slash command needed. Just ask for what you want, or name the skill directly.
+
+Other plugin commands:
+
+```bash
+# List available plugins
+codex plugin list
+
+# Refresh a Git marketplace snapshot
+codex plugin marketplace upgrade
 ```
 
 ---
@@ -62,7 +92,7 @@ From a lesson document (PDF / Word) or a key-points outline, generate a "looks l
 
 **How to use:**
 
-1. Enter an empty directory (or let Claude create one)
+1. Enter an empty directory (or let the assistant create one)
 2. Type `/edu-web-powerpoint`, then describe what you need:
    - Provide a path to a lesson PDF, or
    - Provide key points + outline text
@@ -97,12 +127,12 @@ description: One sentence explaining what this skill does and when to trigger it
 
 - **One skill, one domain** — keep each skill focused on a single task or pattern.
 - **Naming** — lowercase, hyphen-separated, e.g. `css-animations`, `smart-search`.
-- **Description matters** — Claude uses this field to decide when to auto-select the skill.
+- **Description matters** — both Claude Code and Codex use this field to decide when to auto-select the skill.
 - **Self-contained** — skills are expanded into the conversation independently; include all necessary context.
 
 ### 4. Test
 
-Type `/<skill-name>` in Claude Code to test.
+Type `/<skill-name>` in Claude Code to test, or ask for the skill by name in Codex.
 
 ---
 
