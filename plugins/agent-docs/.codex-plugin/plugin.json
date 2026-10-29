@@ -1,7 +1,7 @@
 {
   "name": "agent-docs",
-  "version": "1.1.0",
-  "description": "Scaffolds a progressive-disclosure agent doc entry point (_AGENTS.md + AGENTS.md + CLAUDE.md + docs/) in any project that lacks one.",
+  "version": "1.2.0",
+  "description": "Scaffolds AGENTS.md with a project overview and documentation index when missing; detailed docs are created on demand.",
   "author": {
     "name": "Yan Pan",
     "url": "https://github.com/adampan0527"
@@ -20,7 +20,7 @@
   "interface": {
     "displayName": "Agent Docs",
     "shortDescription": "Scaffold a progressive-disclosure agent doc entry point in any project.",
-    "longDescription": "On SessionStart, checks the project root for _AGENTS.md and, when missing, creates _AGENTS.md (single source of truth), thin AGENTS.md and CLAUDE.md pointers, and the docs/ set referenced by its index table. The hook is idempotent and injects a short [project-init] note instead of dumping the repository into context. Requires bash 3.2+ and POSIX userland; set AGENT_DOCS_DISABLE=1 to opt out.",
+    "longDescription": "On SessionStart, checks the project root for AGENTS.md and, when missing, creates only AGENTS.md with a project overview, documentation index, and rules. No docs/ directory or docs/*.md files are pre-created. Existing AGENTS.md files are preserved. The hook is idempotent and injects a short [project-init] note instead of dumping the repository into context. Requires bash 3.2+ and POSIX userland; set AGENT_DOCS_DISABLE=1 to opt out.",
     "developerName": "Yan Pan",
     "category": "Developer Tools",
     "capabilities": [
@@ -31,7 +31,7 @@
     "brandColor": "#3B7EA1",
     "defaultPrompt": [
       "Scaffold the agent doc entry point for this project.",
-      "Set up _AGENTS.md + AGENTS.md + docs/ here."
+      "Set up AGENTS.md with a project overview and documentation index here."
     ]
   }
 }

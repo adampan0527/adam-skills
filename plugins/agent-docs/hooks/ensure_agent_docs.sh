@@ -3,13 +3,11 @@
 #
 # SessionStart hook for Claude Code and Codex.
 #
-# If the project root has no _AGENTS.md AND the root looks like a real
+# If the project root has no AGENTS.md AND the root looks like a real
 # project, scaffold the minimal progressive-disclosure entry point:
-#   <root>/_AGENTS.md    <- single source of truth (entry prompt, filled progressively)
-#   <root>/AGENTS.md     <- pointer to _AGENTS.md
-#   <root>/CLAUDE.md     <- pointer to _AGENTS.md
+#   <root>/AGENTS.md     <- project overview, doc index, and rules
 #
-# It deliberately does NOT pre-create docs/*.md. The _AGENTS.md it writes
+# It deliberately does NOT pre-create docs/*.md. The AGENTS.md it writes
 # explains that docs are created on demand, because a stub document that
 # every session's index table points at is pure wasted context.
 #
@@ -18,7 +16,7 @@
 #   - <root>/.agent-docs-disable exists          -> do nothing, that project
 #   - root is a system dir or $HOME              -> do nothing
 #   - root has no project marker                 -> do nothing
-# The hook is idempotent: once _AGENTS.md exists it exits silently.
+# The hook is idempotent: once AGENTS.md exists it exits silently.
 #
 # Env:
 #   CODEX_PROJECT_ROOT / CLAUDE_PROJECT_DIR - fallback root when the hook
@@ -70,8 +68,7 @@ root="$resolved"
 # Keep the harness-reported spelling for the message humans read.
 display_root="${cwd:-$root}"
 
-AGENT_MD="$root/_AGENTS.md"
-POINTER_TARGET="_AGENTS.md"
+AGENT_MD="$root/AGENTS.md"
 
 # Already initialised -> nothing to do.
 [ -e "$AGENT_MD" ] && exit 0
@@ -111,7 +108,7 @@ looks_like_project() {
   # project, and an index is still worth having. Note: a bare docs/ directory
   # is deliberately NOT a signal. Plenty of non-project folders keep notes in
   # docs/, and scaffolding them would be a false positive.
-  [ -e "$root/AGENTS.md" ] || [ -e "$root/CLAUDE.md" ]
+  [ -e "$root/_AGENTS.md" ] || [ -e "$root/CLAUDE.md" ]
 }
 looks_like_project || exit 0
 
@@ -123,38 +120,15 @@ write_if_absent() {
   [ -e "$target" ] && return 0
   local tmp
   tmp="$(mktemp "${target}.XXXXXX")" || return 1
-  cat > "$tmp" && mv "$tmp" "$target"
+  cat > "$tmp" && mv "$tmp" "$target" || { rm -f "$tmp"; return 1; }
   created_any=1
 }
 
-# ---------------------------------------------------------------- pointers ---
-write_if_absent "$root/AGENTS.md" <<EOF
-# AGENTS.md（入口指针）
-
-本文件**不存放任何提示词正文**，只是给各 AI 工具的入口指针。
-
-请阅读唯一的内容源：[${POINTER_TARGET}](./${POINTER_TARGET})，并严格按其中的规则工作。
-
-- 内容源：\`${POINTER_TARGET}\`（根目录）
-- 详细文档：\`docs/\` 目录，索引见 \`${POINTER_TARGET}\` 中的「什么时候看哪份文档」表格
-EOF
-
-write_if_absent "$root/CLAUDE.md" <<EOF
-# CLAUDE.md（入口指针）
-
-本文件**不存放任何提示词正文**，只是给 Claude Code 等工具的入口指针。
-
-请阅读唯一的内容源：[${POINTER_TARGET}](./${POINTER_TARGET})，并严格按其中的规则工作。
-
-- 内容源：\`${POINTER_TARGET}\`（根目录）
-- 详细文档：\`docs/\` 目录，索引见 \`${POINTER_TARGET}\` 中的「什么时候看哪份文档」表格
-EOF
-
 # ------------------------------------------------------- the single source ---
-write_if_absent "$AGENT_MD" <<'MDEOF'
-# _AGENTS.md — 本项目唯一的 Agent 提示词入口
+write_if_absent "$AGENT_MD" <<'MDEOF' || exit 1
+# AGENTS.md — 项目说明与文档索引
 
-> ⚠️ **当前状态：本项目还没有入口提示词。**
+> **当前状态：项目说明待填写。**
 > 本文件是由 `agent-docs` 插件的 `hooks/ensure_agent_docs.sh` 在项目首次启动时自动生成的骨架，
 > 除了「基础说明」和下面的索引表格之外，**没有任何针对本项目的具体约定**。
 >
@@ -195,7 +169,7 @@ write_if_absent "$AGENT_MD" <<'MDEOF'
 
 本项目所有 Agent 上下文遵循三条硬规则：
 
-1. **入口最小化**：`_AGENTS.md` 只允许放「基础说明」+「索引表格」+「硬性红线」，正文一律外链。
+1. **入口最小化**：`AGENTS.md` 只允许放「基础说明」+「索引表格」+「硬性红线」，正文一律外链。
    任何一节超过 20 行，就说明它该搬进 `docs/` 了。
 2. **按需加载**：判断该读哪份文档的标准是**上表的「情况」列**，不是「文件好不好看」。
    没匹配到就不读；匹配到就读，且**只读这一份**。
@@ -206,18 +180,14 @@ write_if_absent "$AGENT_MD" <<'MDEOF'
 
 ## 4. 硬性红线
 
-MDEOF
-
-# Red lines that hold for every project regardless of stack.
-cat >> "$AGENT_MD" <<'MDEOF'
 - **禁止**编造基础说明里的事实：查不到就写 `待填写`。
-- **禁止**往 `AGENTS.md` / `CLAUDE.md` 写正文——它们只能是指针。
+- **禁止**预先生成 `docs/*.md` 占位文档：有可复用内容时才创建，并同步更新索引。
 
 ## 5. 维护本文件
 
-- 修改本项目约定时，**改 `docs/` 下的正文**，本文件只维护索引。
+- 项目基础说明和文档索引直接维护在本文件；详细约定写进 `docs/` 并更新索引。
 - 新增文档 = 在 `docs/` 建文件 + 在第 2 节表格加一行，两件事必须同时做完。
-- `AGENTS.md` 与 `CLAUDE.md` 只是指针，**永远不要往里面写正文**。
+- `AGENTS.md` 是项目说明与文档索引的唯一入口，不需要额外的入口文件。
 
 ## 6. 不想让本插件再动这个项目
 
@@ -228,5 +198,5 @@ MDEOF
 
 # Tell the agent the scaffold exists and how to maintain it.
 cat <<EOF
-{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${display_root} 之前没有 ${POINTER_TARGET}，已自动生成 ${POINTER_TARGET} / AGENTS.md / CLAUDE.md 三个文件。当前项目**还没有真正的入口提示词**：请在本次工作中按 ${POINTER_TARGET} 中的「渐进式披露原则」把基础说明填成真实内容。docs/ 下的文档**按需创建**——不要预先铺一堆待填写占位文件，只有真的写下了可复用的内容才建文件并加索引行。不想要这套脚手架的话，在根目录建一个空的 .agent-docs-disable 即可。"}}
+{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"[project-init] 检测到项目根目录 ${display_root} 之前没有 AGENTS.md，已自动生成 AGENTS.md，作为项目说明与文档索引。当前项目说明尚待填写：请在本次工作中按 AGENTS.md 中的「渐进式披露原则」把基础说明填成真实内容。docs/ 下的文档**按需创建**——不要预先铺一堆待填写占位文件，只有真的写下了可复用的内容才建文件并加索引行。不想要这套脚手架的话，在根目录建一个空的 .agent-docs-disable 即可。"}}
 EOF

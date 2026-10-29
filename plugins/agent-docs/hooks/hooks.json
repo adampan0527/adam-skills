@@ -12,7 +12,7 @@
           }
         ],
         "id": "agent-docs:ensure-entry-point",
-        "description": "Create _AGENTS.md + AGENTS.md + CLAUDE.md + docs/ when the project has no entry prompt yet."
+        "description": "Create only AGENTS.md with a project overview and documentation index when missing; docs are created on demand."
       }
     ]
   }

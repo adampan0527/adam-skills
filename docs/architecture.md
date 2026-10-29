@@ -51,7 +51,7 @@ adam-skills/
 | `plugins/<name>/.claude-plugin/plugin.json` | Claude Code 侧单插件清单（name/version/description） | 插件清单 |
 | `plugins/<name>/.codex-plugin/plugin.json` | Codex 侧单插件清单，多 `interface` 展示字段，显式 `skills`/`hooks` | 插件清单 |
 | `plugins/<name>/skills/<skill>/SKILL.md` | 技能定义，两边 harness 均按 `description` 自动选择 | SKILL.md |
-| `plugins/agent-docs/hooks/ensure_agent_docs.sh` | 会话开始时检测并生成文档骨架 | SessionStart 钩子 |
+| `plugins/agent-docs/hooks/ensure_agent_docs.sh` | 会话开始时仅生成缺失的 AGENTS.md，承载项目说明和文档索引 | SessionStart 钩子 |
 | `scripts/check.sh` | 提交前跑，强制 manifest 与 SKILL.md 的硬性红线 | 校验 |
 
 ## 依赖关系

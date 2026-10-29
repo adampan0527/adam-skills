@@ -79,7 +79,7 @@ codex plugin marketplace upgrade
 
 | Plugin | Description |
 |--------|-------------|
-| `agent-docs` | On `SessionStart`, scaffolds a progressive-disclosure doc entry point (`_AGENTS.md` + two pointers) in any project that lacks one. See its own [README](plugins/agent-docs/README.md). |
+| `agent-docs` | On `SessionStart`, creates only `AGENTS.md` with a project overview and documentation index when missing; `docs/*.md` are created on demand. See its own [README](plugins/agent-docs/README.md). |
 
 Install it alongside `edu` with `/plugin install agent-docs@adam-skills` (Claude Code)
 or `codex plugin add agent-docs@adam-skills` (Codex).

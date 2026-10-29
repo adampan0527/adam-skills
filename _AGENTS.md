@@ -18,7 +18,7 @@
 | 包管理器 / 构建命令 | 无（仓库根目录无 `package.json`，不需构建） |
 | 测试命令 | 无自动化测试；校验跑 `bash scripts/check.sh`，skill 靠 harness 内触发人工验证 |
 | 代码规范来源 | 人工约定，见 [docs/conventions.md](docs/conventions.md) |
-| 当前对外发布 | 市场 `adam-skills` v1.0.0；插件 `agent-docs` v1.1.0、`edu` v1.1.0 |
+| 当前对外发布 | 市场 `adam-skills` v1.0.0；插件 `agent-docs` v1.2.0、`edu` v1.1.0 |
 | 文档目录 | `docs/`（按需创建，当前仅 2 份已填实） |
 
 **填写规则**：每一行都只写「查得到的事实」，一行不超过 30 字；写不出来就保持 `待填写`，不要编造。

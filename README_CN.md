@@ -79,7 +79,7 @@ codex plugin marketplace upgrade
 
 | 插件 | 说明 |
 |------|------|
-| `agent-docs` | 会话启动时，为缺少入口文档的项目自动生成渐进式披露骨架（`_AGENTS.md` + 两个指针文件）。详见它自己的 [README](plugins/agent-docs/README.md)。 |
+| `agent-docs` | 会话启动时，仅为缺少 `AGENTS.md` 的项目生成该文件，直接承载项目说明与文档索引；`docs/*.md` 按需创建。详见它自己的 [README](plugins/agent-docs/README.md)。 |
 
 与 `edu` 一起安装：Claude Code 用 `/plugin install agent-docs@adam-skills`，
 Codex 用 `codex plugin add agent-docs@adam-skills`。
